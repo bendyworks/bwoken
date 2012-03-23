@@ -1,6 +1,8 @@
 # Bwoken
 
-TODO: Write a gem description
+Runs your UIAutomation tests from the command line for both iPhone and iPad.
+
+Supports coffeescript.
 
 ## Installation
 
@@ -12,13 +14,15 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Then, add the following line to your `Rakefile`:
 
-    $ gem install bwoken
+    require 'bwoken/tasks'
 
 ## Usage
 
-TODO: Write usage instructions here
+Run all your tests via:
+
+    $ rake
 
 ## Contributing
 
