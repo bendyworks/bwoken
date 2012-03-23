@@ -32,13 +32,21 @@ If you'd like the latest and greatest... that's not yet on rubygems, use this se
 
 ### Edge Installation
 
+If you're using RVM, set the execution bit on `~/.rvm/hooks/after_cd_bundler`:
+
+    $ chmod +x ~/.rvm/hooks/after_cd_bundler
+
+If you're not using RVM, ensure `bundler_bin` is at the beginning of your `$PATH`, such as:
+
+    $ echo "export PATH=bundler_bin:${PATH}" >> ~/.bash_profile
+
 Add this line to your application's Gemfile:
 
     gem 'bwoken', :git => 'git://github.com/bendyworks/bwoken'
 
 And then execute:
 
-    $ bundle --binstubs
+    $ bundle --binstubs=bundler_bin
 
 Then, add the following line to your `Rakefile`:
 
