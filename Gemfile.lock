@@ -1,0 +1,16 @@
+PATH
+  remote: .
+  specs:
+    bwoken (0.0.1)
+      colorful
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colorful (0.0.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bwoken!
