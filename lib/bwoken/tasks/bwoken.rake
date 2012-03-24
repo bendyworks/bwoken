@@ -1,4 +1,4 @@
-require 'Bwoken'
+require 'bwoken'
 
 desc 'Remove result and trace files'
 task :clean do
@@ -18,8 +18,7 @@ task :build do
 end
 
 task :coffeescript do
-  test_files = 'automation/*.coffee'
-  system "coffee -b -c #{test_files}"
+  Bwoken::Coffeescript.compile_all
 end
 
 device_families = %w(iphone ipad)
