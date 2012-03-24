@@ -7,23 +7,17 @@ module Bwoken
 
     on :debug do |line|
       tokens = line.split(' ')
-      tokens.delete_at(2)
-      tokens.delete_at(0)
-      puts "#{tokens[0]} #{tokens[1].yellow}\t#{tokens[2..-1].join(' ')}"
+      puts "#{tokens[1]} #{tokens[3].yellow}\t#{tokens[4..-1].join(' ')}"
     end
 
     on :fail do |line|
       tokens = line.split(' ')
-      tokens.delete_at(2)
-      tokens.delete_at(0)
-      puts "#{tokens[0]} #{tokens[1].red}\t#{tokens[2..-1].join(' ')}"
+      puts "#{tokens[1]} #{tokens[3].red}\t#{tokens[4..-1].join(' ')}"
     end
 
     on :pass do |line|
       tokens = line.split(' ')
-      tokens.delete_at(2)
-      tokens.delete_at(0)
-      puts "#{tokens[0]} #{tokens[1].green}\t#{tokens[2..-1].join(' ')}"
+      puts "#{tokens[1]} #{tokens[3].green}\t#{tokens[4..-1].join(' ')}"
     end
 
     on :other do |line|
