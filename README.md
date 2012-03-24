@@ -4,6 +4,8 @@ Runs your UIAutomation tests from the command line for both iPhone and iPad.
 
 Supports coffeescript.
 
+Requires [unix_instruments.sh](https://gist.github.com/1402258) to be in your `$PATH`. (TODO: remove this requirement)
+
 ![screenshot](https://raw.github.com/bendyworks/bwoken/master/doc/screenshot.png)
 
 ## Installation
