@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'open3'
 
-require 'bwoken/colorful_formatter'
+require 'bwoken/formatters/colorful_formatter'
 
 module Bwoken
   class Script
