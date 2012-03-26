@@ -1,7 +1,10 @@
+require 'fileutils'
+
 require 'bwoken/version'
 require 'bwoken/simulator'
 require 'bwoken/build'
 require 'bwoken/script'
+require 'bwoken/coffeescript'
 
 module Bwoken
   class << self
@@ -32,7 +35,7 @@ module Bwoken
 
     def results_path
       File.join(project_directory, 'automation', 'results').tap do |dir_name|
-        Dir.mkdir_p(dir_name) unless Dir.exists?(dir_name)
+        FileUtils.mkdir_p(dir_name) unless Dir.exists?(dir_name)
       end
     end
 
