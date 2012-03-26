@@ -3,9 +3,6 @@ require 'bwoken/simulator'
 require 'bwoken/build'
 require 'bwoken/script'
 
-require 'open3'
-require 'colorful'
-
 module Bwoken
   class << self
     def app_name

@@ -28,10 +28,10 @@ device_families.each do |device_family|
 
   namespace device_family do
     task :test => :coffeescript do
-      script = Bwoken::Script.new
-      script.path = "automation/#{device_family}.js"
-      script.device_family = device_family
-      script.run
+      Bwoken::Script.run do |script|
+        script.path = "automation/#{device_family}.js"
+        script.device_family = device_family
+      end
     end
   end
 
