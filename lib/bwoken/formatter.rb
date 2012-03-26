@@ -11,6 +11,12 @@ module Bwoken
       end
     end
 
+    %w(pass fail debug other).each do |log_level|
+      on log_level.to_sym do |line|
+        puts line
+      end
+    end
+
     def format stdout
       exit_status = 0
 
