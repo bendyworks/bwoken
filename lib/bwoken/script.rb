@@ -25,22 +25,40 @@ module Bwoken
       }
     end
 
-    def cmd
-      variables = env_variables.map{|key,val| "-e #{key} #{val}"}.join(' ')
+    def env_variables_for_cli
+      env_variables.map{|key,val| "-e #{key} #{val}"}.join(' ')
+    end
 
+    def cmd
       "unix_instruments.sh \
         -t #{Bwoken.path_to_automation} \
         #{Bwoken.app_dir} \
-        #{variables}"
+        #{env_variables_for_cli}"
+    end
+
+    def simulator
+      Bwoken::Simulator
+    end
+
+    def set_simulator_device_family!
+      simulator.device_family = device_family
+    end
+
+    def formatter
+      Bwoken::ColorfulFormatter
+    end
+
+    def make_results_path_dir
+      FileUtils.mkdir_p Bwoken.results_path
     end
 
     def run
-      Bwoken::Simulator.device_family = device_family
+      set_simulator_device_family!
+      make_results_path_dir
 
-      FileUtils.mkdir_p Bwoken.results_path
       exit_status = 0
       Open3.popen2e(cmd) do |stdin, stdout, wait_thr|
-        exit_status = Bwoken::ColorfulFormatter.format stdout
+        exit_status = formatter.format stdout
       end
       raise 'Build failed' unless exit_status == 0
     end

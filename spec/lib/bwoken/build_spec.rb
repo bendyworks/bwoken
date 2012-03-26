@@ -41,10 +41,6 @@ describe Bwoken::Build do
   end
 
   describe '#cmd' do
-    def stub_out obj, method, value
-      obj.stub(method => value)
-      value
-    end
     it 'returns the xcodebuild command' do
       workspace = stub_out(Bwoken, :workspace, :foo)
       scheme = stub_out(subject, :scheme, :bar)
