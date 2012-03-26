@@ -48,8 +48,12 @@ module Bwoken
       save javascript
     end
 
+    def source_contents
+      IO.read(@source_file)
+    end
+
     def compile
-      source = IO.read(@source_file)
+      source = source_contents
       self.class.context.call('CoffeeScript.compile', source, :bare => true)
     end
 
