@@ -11,6 +11,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'colorful'
   gem.add_dependency 'execjs'
   gem.add_dependency 'coffee-script-source'
+  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'guard-rspec'
 
   gem.files         = ['lib/bwoken.rb', 'lib/tasks/bwoken.rake']
   gem.name          = "bwoken"

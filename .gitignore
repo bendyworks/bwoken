@@ -1,6 +1,7 @@
 *.gem
 *.rbc
-.bundle
+# if bundler_bin is in here, then .bundle should not
+# .bundle
 .config
 .yardoc
 InstalledFiles
@@ -11,3 +12,4 @@ pkg
 rdoc
 spec/reports
 tmp
+bundler_bin

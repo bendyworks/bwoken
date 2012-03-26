@@ -18,7 +18,7 @@ module Bwoken
     def env_variables
       {
         'GCC_PREPROCESSOR_DEFINITIONS' => 'TEST_MODE=1',
-        'CONFIGURATION_BUILD_DIR' => Bwoken.build_directory
+        'CONFIGURATION_BUILD_DIR' => Bwoken.build_path
       }
     end
 

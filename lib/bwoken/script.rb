@@ -30,7 +30,7 @@ module Bwoken
 
       "unix_instruments.sh \
         -t #{Bwoken.path_to_automation} \
-        #{Bwoken.app} \
+        #{Bwoken.app_dir} \
         #{variables}"
     end
 
