@@ -1,12 +1,10 @@
+require 'fileutils'
+
 require 'bwoken/version'
 require 'bwoken/simulator'
 require 'bwoken/build'
 require 'bwoken/script'
 require 'bwoken/coffeescript'
-
-require 'fileutils'
-require 'open3'
-require 'colorful'
 
 module Bwoken
   class << self

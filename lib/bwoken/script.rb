@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'open3'
 
 require 'bwoken/colorful_formatter'
 
@@ -6,6 +7,12 @@ module Bwoken
   class Script
 
     attr_accessor :device_family, :path
+
+    def self.run
+      script = new
+      yield script
+      script.run
+    end
 
     def device_family
       @device_family ||= ENV['FAMILY'] || 'iphone'
