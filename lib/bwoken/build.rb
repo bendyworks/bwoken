@@ -22,19 +22,22 @@ module Bwoken
       }
     end
 
-    def cmd
-      variables = env_variables.map{|key,val| "#{key}=#{val}"}.join(' ')
+    def variables_for_cli
+      env_variables.map{|key,val| "#{key}=#{val}"}.join(' ')
+    end
 
+    def cmd
       "xcodebuild \
         -workspace #{Bwoken.workspace} \
         -scheme #{scheme} \
         -configuration #{configuration} \
         -sdk #{sdk} \
-        #{variables} \
+        #{variables_for_cli} \
         clean build"
     end
 
     def compile
+      exit_status = 0
       Open3.popen2e(cmd) do |stdin, stdout, wait_thr|
 
         print "Building"
@@ -54,9 +57,11 @@ module Bwoken
           puts
         else
           puts out_string
-          raise 'Build failed'
+          puts 'Build failed'
+          return exit_status
         end
       end
+      exit_status
     end
   end
 end
