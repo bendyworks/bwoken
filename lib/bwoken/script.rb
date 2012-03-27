@@ -37,7 +37,7 @@ module Bwoken
     end
 
     def cmd
-      "unix_instruments.sh \
+      "#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh \
         -t #{Bwoken.path_to_automation_template} \
         #{Bwoken.app_dir} \
         #{env_variables_for_cli}"

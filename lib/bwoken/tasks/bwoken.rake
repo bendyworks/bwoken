@@ -18,6 +18,7 @@ task :build do
 end
 
 task :coffeescript do
+  Bwoken::Coffeescript.clean
   Bwoken::Coffeescript.compile_all
 end
 

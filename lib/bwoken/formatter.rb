@@ -15,7 +15,10 @@ module Bwoken
     end
 
     def line_demuxer line, exit_status
-      if line =~ /^\d{4}/
+      if line =~ /Instruments Trace Error/
+        exit_status = 1
+        _on_fail_callback(line)
+      elsif line =~ /^\d{4}/
         tokens = line.split(' ')
 
         if tokens[3] =~ /Pass/

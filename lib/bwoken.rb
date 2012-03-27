@@ -21,7 +21,7 @@ module Bwoken
     end
 
     def test_suite_path
-      File.join(project_path, 'automation', 'javascript')
+      Bwoken::Coffeescript.compiled_javascript_path
     end
 
     def path_to_automation_template

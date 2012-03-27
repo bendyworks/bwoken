@@ -1,24 +1,28 @@
 require 'bwoken/coffeescript'
 require 'stringio'
 
+require 'spec_helper'
+
 describe Bwoken::Coffeescript do
-  let(:subject) { Bwoken::Coffeescript.new('foo') }
+  let(:subject) { Bwoken::Coffeescript.new('foo/bar.js') }
   describe '.source_folder' do
-    it "should be 'automation'" do
+    it "should match 'automation/coffeescript'" do
+      Bwoken.stub(:project_path => 'bar')
       Bwoken::Coffeescript.source_folder.should match /automation\/coffeescript\Z/
     end
   end
 
   describe '.destination_folder' do
-    it "should be 'automation'" do
-      Bwoken::Coffeescript.destination_folder.should match /automation\/javascript\Z/
+    it "should equal 'automation/tmp/javascript'" do
+      Bwoken.stub(:project_path => 'proj_path')
+      subject.destination_folder.should == 'proj_path/automation/tmp/javascript/foo'
     end
   end
 
   describe '.test_files' do
     it 'wildcard includes coffeescript files' do
       Bwoken::Coffeescript.stub(:source_folder => 'z_source_folder')
-      Bwoken::Coffeescript.test_files.should == 'z_source_folder/*.coffee'
+      Bwoken::Coffeescript.test_files.should == 'z_source_folder/**/*.coffee'
     end
   end
 
@@ -46,17 +50,24 @@ describe Bwoken::Coffeescript do
     it 'is the path to the desired output (.js) file' do
       filename = 'bazzle.coffee'
       stub_folder = 'stub_folder'
-      Bwoken::Coffeescript.stub(:destination_folder => stub_folder)
       subject = Bwoken::Coffeescript.new(filename)
+      subject.stub(:destination_folder => stub_folder)
       subject.destination_file.should == "stub_folder/bazzle.js"
     end
   end
 
   describe '#make' do
     before do
+      FileUtils.stub(:mkdir_p)
+      subject.stub(:destination_folder => 'foo')
       subject.stub(:compile)
       subject.stub(:translate_to_uiautomation)
       subject.stub(:save)
+    end
+
+    it 'makes the destination folder' do
+      FileUtils.should_receive(:mkdir_p).with('foo')
+      subject.make
     end
 
     it 'compiles' do

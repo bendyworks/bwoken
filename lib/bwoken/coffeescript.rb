@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'coffee_script/source'
 require 'execjs'
 
@@ -6,15 +7,11 @@ module Bwoken
     class << self
 
       def source_folder
-        'automation/coffeescript'
-      end
-
-      def destination_folder
-        Bwoken.test_suite_path
+        File.join(Bwoken.project_path, 'automation/coffeescript')
       end
 
       def test_files
-        "#{source_folder}/*.coffee"
+        "#{source_folder}/**/*.coffee"
       end
 
       def coffee_script_source
@@ -26,23 +23,38 @@ module Bwoken
       end
 
       def compile_all
+
         Dir[test_files].each do |filename|
           new(filename).make
         end
       end
 
+      def clean
+        FileUtils.rm_rf compiled_javascript_path
+      end
+
+      def compiled_javascript_path
+        File.join(Bwoken.project_path, 'automation/tmp/javascript')
+      end
+
     end
 
-    def initialize filename
-      @source_file = filename
+    def initialize path
+      @source_file = path
+    end
+
+    def destination_folder
+      subpath = File.dirname(@source_file.sub(Regexp.new(self.class.source_folder + '/'), '')).sub('.','')
+      File.join(self.class.compiled_javascript_path, subpath)
     end
 
     def destination_file
       basename = File.basename(@source_file, '.coffee')
-      "#{self.class.destination_folder}/#{basename}.js"
+      "#{self.destination_folder}/#{basename}.js"
     end
 
     def make
+      FileUtils.mkdir_p(destination_folder)
       raw_javascript = compile
       javascript = translate_to_uiautomation raw_javascript
       save javascript
