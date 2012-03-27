@@ -20,9 +20,5 @@ module Bwoken
       puts "#{tokens[1]} #{tokens[3].green}\t#{tokens[4..-1].join(' ')}"
     end
 
-    on :other do |line|
-      puts line
-    end
-
   end
 end

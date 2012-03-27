@@ -1,23 +1,18 @@
-require 'bwoken'
 require 'fileutils'
+
+require 'spec_helper'
+require 'bwoken'
 
 describe Bwoken do
 
-  let(:proj_path) { File.expand_path('../../tmp/FakeProject', __FILE__) }
-  before(:all) { FileUtils.mkdir_p(proj_path) }
-
-  def stub_proj_path
-    Dir.stub(:pwd => proj_path)
-  end
-
-  describe '.app_name' do
+  describe '.app_name', :stub_proj_path do
     it "returns the app's name without the .app prefix" do
       stub_proj_path
       Bwoken.app_name.should == 'FakeProject'
     end
   end
 
-  describe '.app_dir' do
+  describe '.app_dir', :stub_proj_path do
     it "returns the app's name with the .app suffix" do
       stub_proj_path
       Bwoken.app_dir.should == "#{proj_path}/build/FakeProject.app"
@@ -31,13 +26,13 @@ describe Bwoken do
     end
   end
 
-  describe '.path_to_automation' do
+  describe '.path_to_automation_template' do
     it 'returns the location of the Automation template' do
-      File.exists?(Bwoken.path_to_automation).should be_true
+      File.exists?(Bwoken.path_to_automation_template).should be_true
     end
   end
 
-  describe '.build_path' do
+  describe '.build_path', :stub_proj_path do
     context "when it doesn't yet exist" do
       it 'creates the build directory' do
         stub_proj_path
@@ -53,14 +48,14 @@ describe Bwoken do
     end
   end
 
-  describe '.workspace' do
+  describe '.workspace', :stub_proj_path do
     it 'returns the workspace directory' do
       stub_proj_path
       Bwoken.workspace.should == "#{proj_path}/FakeProject.xcworkspace"
     end
   end
 
-  describe '.results_path' do
+  describe '.results_path', :stub_proj_path do
     context "when it doesn't yet exist" do
       it 'creates the results directory' do
         stub_proj_path

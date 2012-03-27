@@ -27,10 +27,7 @@ device_families.each do |device_family|
 
   namespace device_family do
     task :test => :coffeescript do
-      Bwoken::Script.run do |script|
-        script.path = "automation/#{device_family}.js"
-        script.device_family = device_family
-      end
+      Bwoken::Script.run_all device_family
     end
   end
 
@@ -39,7 +36,15 @@ device_families.each do |device_family|
 
 end
 
-desc 'Build and run tests'
-task :test => ([:build] + device_families)
+desc 'Run all tests without compiling first'
+task :test do
+  if ENV['FAMILY']
+    Rake::Task[ENV['FAMILY']].invoke
+  else
+    device_families.each do |device_family|
+      Rake::Task[device_family].invoke
+    end
+  end
+end
 
-task :default => :test
+task :default => [:build, :test]
