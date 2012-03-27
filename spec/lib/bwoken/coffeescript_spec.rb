@@ -5,13 +5,13 @@ describe Bwoken::Coffeescript do
   let(:subject) { Bwoken::Coffeescript.new('foo') }
   describe '.source_folder' do
     it "should be 'automation'" do
-      Bwoken::Coffeescript.source_folder.should == 'automation'
+      Bwoken::Coffeescript.source_folder.should match /automation\/coffeescript\Z/
     end
   end
 
   describe '.destination_folder' do
     it "should be 'automation'" do
-      Bwoken::Coffeescript.destination_folder.should == 'automation'
+      Bwoken::Coffeescript.destination_folder.should match /automation\/javascript\Z/
     end
   end
 

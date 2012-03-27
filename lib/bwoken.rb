@@ -20,7 +20,11 @@ module Bwoken
       Dir.pwd
     end
 
-    def path_to_automation
+    def test_suite_path
+      File.join(project_path, 'automation', 'javascript')
+    end
+
+    def path_to_automation_template
       '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
     end
 

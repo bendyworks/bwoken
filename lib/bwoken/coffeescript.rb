@@ -6,11 +6,11 @@ module Bwoken
     class << self
 
       def source_folder
-        'automation'
+        'automation/coffeescript'
       end
 
       def destination_folder
-        'automation'
+        Bwoken.test_suite_path
       end
 
       def test_files

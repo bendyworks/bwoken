@@ -26,9 +26,9 @@ describe Bwoken do
     end
   end
 
-  describe '.path_to_automation' do
+  describe '.path_to_automation_template' do
     it 'returns the location of the Automation template' do
-      File.exists?(Bwoken.path_to_automation).should be_true
+      File.exists?(Bwoken.path_to_automation_template).should be_true
     end
   end
 
