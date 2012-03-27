@@ -39,6 +39,8 @@ module Bwoken
 
     end
 
+    attr_accessor :import_strings
+
     def initialize path
       @source_file = path
     end
@@ -55,8 +57,7 @@ module Bwoken
 
     def make
       FileUtils.mkdir_p(destination_folder)
-      raw_javascript = compile
-      javascript = translate_to_uiautomation raw_javascript
+      javascript = compile
       save javascript
     end
 
@@ -65,16 +66,28 @@ module Bwoken
     end
 
     def compile
-      source = source_contents
+      source = precompile(source_contents)
       self.class.context.call('CoffeeScript.compile', source, :bare => true)
     end
 
-    def translate_to_uiautomation raw_javascript
-      raw_javascript
+    def precompile coffeescript
+      capture_imports coffeescript
+      remove_imports coffeescript
+    end
+
+    def capture_imports raw_coffeescript
+      self.import_strings = raw_coffeescript.scan(/#import .*$/)
+    end
+
+    def remove_imports raw_coffeescript
+      raw_coffeescript.gsub(/#import .*$/,'')
     end
 
     def save javascript
       File.open(destination_file, 'w') do |io|
+        import_strings.each do |import_string|
+          io.puts import_string
+        end unless import_strings.nil?
         io.puts javascript
       end
     end
