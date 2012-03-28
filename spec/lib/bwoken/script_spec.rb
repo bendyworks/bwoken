@@ -72,7 +72,9 @@ describe Bwoken::Script do
     it 'preps the variables for cli use' do
       subject.path = 'foo'
       Bwoken.stub(:results_path => 'bar')
-      subject.env_variables_for_cli.should == '-e UIASCRIPT foo -e UIARESULTSPATH bar'
+
+      expected = ['-e UIASCRIPT foo -e UIARESULTSPATH bar', '-e UIARESULTSPATH bar -e UIASCRIPT foo']
+      subject.env_variables_for_cli.should be_in(expected)
     end
   end
 

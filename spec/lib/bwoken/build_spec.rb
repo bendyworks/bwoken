@@ -36,7 +36,7 @@ describe Bwoken::Build do
   describe '#variables_for_cli' do
     it 'formats variables for xcodebuild' do
       subject.stub(:env_variables => {'foo' => 'bar', 'baz' => 'qux'})
-      subject.variables_for_cli.should == 'foo=bar baz=qux'
+      subject.variables_for_cli.should be_in(['foo=bar baz=qux', 'baz=qux foo=bar'])
     end
   end
 

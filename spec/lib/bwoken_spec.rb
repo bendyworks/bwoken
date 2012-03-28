@@ -28,7 +28,7 @@ describe Bwoken do
 
   describe '.path_to_automation_template' do
     it 'returns the location of the Automation template', :platform => :osx do
-      File.exists?(Bwoken.path_to_automation_template).should be_true
+      File.file?(Bwoken.path_to_automation_template).should be_true
     end
   end
 
@@ -38,7 +38,7 @@ describe Bwoken do
         stub_proj_path
         FileUtils.rm_r("#{proj_path}/build")
         Bwoken.build_path
-        Dir.exists?("#{proj_path}/build").should be_true
+        File.directory?("#{proj_path}/build").should be_true
       end
     end
 
@@ -61,7 +61,7 @@ describe Bwoken do
         stub_proj_path
         FileUtils.rm_rf("#{proj_path}/automation")
         Bwoken.results_path
-        Dir.exists?("#{proj_path}/automation/results").should be_true
+        File.directory?("#{proj_path}/automation/results").should be_true
       end
     end
     it 'returns the results path' do

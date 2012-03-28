@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'coffee_script/source'
+require 'json' if RUBY_VERSION =~ /^1\.8\./
 require 'execjs'
 
 module Bwoken
