@@ -61,7 +61,7 @@ describe Bwoken::Coffeescript do
       FileUtils.stub(:mkdir_p)
       subject.stub(:destination_folder => 'foo')
       subject.stub(:compile)
-      subject.stub(:translate_to_uiautomation)
+      subject.stub(:precompile)
       subject.stub(:save)
     end
 
@@ -74,20 +74,6 @@ describe Bwoken::Coffeescript do
       subject.should_receive(:compile).once
       subject.make
     end
-
-    it 'translates the compiled js' do
-      test_js = '({js:"good"})();'
-      subject.stub(:compile => test_js)
-      subject.should_receive(:translate_to_uiautomation).with(test_js)
-      subject.make
-    end
-
-    it 'saves the translated js' do
-      test_js = 'eval {coffee: "pythony"}'
-      subject.stub(:translate_to_uiautomation => test_js)
-      subject.should_receive(:save).with(test_js)
-      subject.make
-    end
   end
 
   describe '#compile' do
@@ -97,8 +83,37 @@ describe Bwoken::Coffeescript do
     end
   end
 
-  describe '#translate_to_uiautomation raw_javascript' do
-    it "does something with the #import tag"
+  describe '#capture_imports raw_javascript' do
+    let(:test_js) {"var foo;\n#import bazzle.js\nvar bar;"}
+    it "collects the #import tag" do
+      subject.capture_imports(test_js)
+      subject.import_strings.should == ["#import bazzle.js"]
+    end
+  end
+
+  describe '#remove_imports raw_javascript' do
+    let(:test_js) {"var foo;\n#import bazzle.js\nvar bar;"}
+    it 'removes the #import tag' do
+      subject.remove_imports(test_js).should == "var foo;\n\nvar bar;"
+    end
+  end
+
+  describe '#precompile' do
+    before do
+      subject.stub(:capture_imports)
+      subject.stub(:remove_imports)
+    end
+
+    it 'calls capture_imports' do
+      subject.should_receive(:capture_imports).with('foo')
+      subject.precompile 'foo'
+    end
+
+    it 'calls remove_imports' do
+      subject.should_receive(:remove_imports).with('foo')
+      subject.precompile 'foo'
+    end
+
   end
 
   describe '#save javascript' do
@@ -115,6 +130,25 @@ describe Bwoken::Coffeescript do
       subject.save 'some javascript'
       stringio.string.strip.should == 'some javascript'
     end
+
+    context 'with import_strings' do
+      it 'saves the import_strings first' do
+        stringio = StringIO.new
+        destination_file = 'bazzle/bar.js'
+        subject.stub(:destination_file => destination_file)
+        subject.import_strings = ["#import foo.js", "#import bar.js"]
+
+        File.should_receive(:open).
+          any_number_of_times.
+          with(destination_file, 'w').
+          and_yield(stringio)
+
+        subject.save 'some javascript'
+        stringio.string.strip.should == "#import foo.js\n#import bar.js\nsome javascript"
+      end
+
+    end
+
   end
 
 end
