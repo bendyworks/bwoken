@@ -53,10 +53,21 @@ describe Bwoken::Formatter do
     end
 
     context 'for a failing line' do
-      it 'calls _on_fail_callback' do
-        subject.should_receive(:_on_fail_callback).with('1234 a a Fail')
-        subject.line_demuxer('1234 a a Fail', 0)
+      context 'Fail error' do
+        it 'calls _on_fail_callback' do
+          subject.should_receive(:_on_fail_callback).with('1234 a a Fail')
+          subject.line_demuxer('1234 a a Fail', 0)
+        end
       end
+
+      context 'Instruments Trace Error message' do
+        it 'calls _on_fail_callback' do
+          msg = 'Instruments Trace Error foo'
+          subject.should_receive(:_on_fail_callback).with(msg)
+          subject.line_demuxer(msg, 0)
+        end
+      end
+
       it 'returns 1' do
         exit_status = 0
         capture_stdout do
