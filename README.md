@@ -4,11 +4,28 @@ Runs your UIAutomation tests from the command line for both iPhone and iPad. ![b
 
 Supports coffeescript.
 
-Requires [unix_instruments.sh](https://gist.github.com/1402258) to be in your `$PATH`. (TODO: remove this requirement)
-
 ![screenshot](https://raw.github.com/bendyworks/bwoken/master/doc/screenshot.png)
 
-## Installation
+
+## Usage
+
+Make sure bwoken is properly installed via one of the methods below. Then, build your project and run all your tests via:
+
+    $ rake
+
+
+## Installation with rvm (recommended)
+
+Ensure Xcode is up-to-date.
+
+Add an .rvmrc file to your project, such as:
+
+    $ echo 'rvm use 1.9.3@MyProject --create' >> .rvmrc
+
+Install bundler and init:
+
+    $ gem install bundler
+    $ bundle init
 
 Add this line to your application's Gemfile:
 
@@ -16,53 +33,60 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle --binstubs=bundler_bin
+
+Ensure your after_cd_bundler rvm hook is enabled:
+
+    $ chmod u+x ~/.rvm/hooks/after_cd_bundler
 
 Then, add the following line to your `Rakefile`:
 
     require 'bwoken/tasks'
 
-## Usage
+Initialize your bwoken file structure:
 
-Run all your tests via:
+    $ rake bwoken:init
 
-    $ rake
+Ensure your project is in a workspace rather than simply a project:
 
-## Living on the Edge
+* In Xcode, select File -> Save as workspace...
+* Save the workspace in the same directory as your .xcodeproj file
 
-If you'd like the latest and greatest... that's not yet on rubygems, use this section as reference.
 
-### Edge Installation
+## Installation without rvm (not recommended)
 
-If you're using RVM, set the execution bit on `~/.rvm/hooks/after_cd_bundler`:
+Ensure Xcode is up-to-date.
 
-    $ chmod +x ~/.rvm/hooks/after_cd_bundler
+Install bundler and init:
 
-If you're not using RVM, ensure `bundler_bin` is at the beginning of your `$PATH`, such as:
-
-    $ echo "export PATH=bundler_bin:${PATH}" >> ~/.bash_profile
+    $ gem install bundler
+    $ bundle init
 
 Add this line to your application's Gemfile:
 
-    gem 'bwoken', :git => 'git://github.com/bendyworks/bwoken'
+    gem 'bwoken'
 
 And then execute:
 
     $ bundle --binstubs=bundler_bin
 
+Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:
+
+    $ echo 'export PATH=bundler_bin:$PATH' >> ~/.bash_profile
+
 Then, add the following line to your `Rakefile`:
 
     require 'bwoken/tasks'
 
-### Edge Usage
+Initialize your bwoken file structure:
 
-If you installed with the `--binstubs` option as specified as above, usage is the same:
+    $ rake bwoken:init
 
-    $ rake
+Ensure your project is in a workspace rather than simply a project:
 
-If you didn't use the `--binstubs` option, you must prepend the command with `bundle exec`:
+* In Xcode, select File -> Save as workspace...
+* Save the workspace in the same directory as your .xcodeproj file
 
-    $ bundle exec rake
 
 ## Contributing
 
