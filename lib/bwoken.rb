@@ -35,7 +35,7 @@ module Bwoken
     end
 
     def path
-      File.join(project_path, 'instruments')
+      File.join(project_path, 'integration')
     end
 
     def workspace

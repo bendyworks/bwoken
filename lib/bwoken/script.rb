@@ -11,18 +11,27 @@ module Bwoken
 
     attr_accessor :path
 
-    def self.run_all device_family
-      Simulator.device_family = device_family
+    class << self
 
-      Dir["#{Bwoken.test_suite_path}/#{device_family}/**/*.js"].each do |javascript|
-        run(javascript)
+      def run_all device_family
+        Simulator.device_family = device_family
+
+        puts "#{Bwoken.test_suite_path}/#{device_family}/**/*.js"
+        Dir["#{Bwoken.test_suite_path}/#{device_family}/**/*.js"].each do |javascript|
+          run(javascript)
+        end
       end
-    end
 
-    def self.run javascript_path
-      script = new
-      script.path = javascript_path
-      script.run
+      def run javascript_path
+        script = new
+        script.path = javascript_path
+        script.run
+      end
+
+      def trace_file_path
+        File.join(Bwoken.path, 'tmp', 'trace')
+      end
+
     end
 
     def env_variables
@@ -38,6 +47,7 @@ module Bwoken
 
     def cmd
       "#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh \
+        -D #{self.class.trace_file_path} \
         -t #{Bwoken.path_to_automation_template} \
         #{Bwoken.app_dir} \
         #{env_variables_for_cli}"
