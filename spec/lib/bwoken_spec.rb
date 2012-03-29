@@ -73,14 +73,15 @@ describe Bwoken do
     context "when it doesn't yet exist" do
       it 'creates the results directory' do
         stub_proj_path
-        FileUtils.rm_rf("#{proj_path}/integration")
+        File.should_receive(:directory?).with("#{proj_path}/integration/tmp/results").and_return(false)
+        FileUtils.should_receive(:mkdir_p).with("#{proj_path}/integration/tmp/results")
         Bwoken.results_path
-        File.directory?("#{proj_path}/integration/results").should be_true
       end
     end
     it 'returns the results path' do
       stub_proj_path
-      Bwoken.results_path.should == "#{proj_path}/integration/results"
+      File.stub(:directory?).and_return(true)
+      Bwoken.results_path.should == "#{proj_path}/integration/tmp/results"
     end
   end
 

@@ -2,8 +2,8 @@ require 'bwoken'
 
 desc 'Remove result and trace files'
 task :clean do
-  print "Removing instrumentscli*.trace & #{Bwoken.path}/results/* & #{Bwoken::Script.trace_file_path}/* ... "
-  system "rm -rf instrumentscli*.trace #{Bwoken.path}/results/* #{Bwoken::Script.trace_file_path}/*"
+  print "Removing #{Bwoken.results_path}/* & #{Bwoken::Script.trace_file_path}/* ... "
+  system "rm -rf #{Bwoken.results_path}/* #{Bwoken::Script.trace_file_path}/*"
   puts 'done.'
 end
 
