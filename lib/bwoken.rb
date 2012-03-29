@@ -8,6 +8,14 @@ require 'bwoken/coffeescript'
 
 module Bwoken
   class << self
+    def path
+      File.join(project_path, 'integration')
+    end
+
+    def tmp_path
+      File.join(path, 'tmp')
+    end
+
     def app_name
       File.basename(project_path)
     end
@@ -39,7 +47,7 @@ module Bwoken
     end
 
     def results_path
-      File.join(project_path, 'automation', 'results').tap do |dir_name|
+      File.join(tmp_path, 'results').tap do |dir_name|
         FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
       end
     end

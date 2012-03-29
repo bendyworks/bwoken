@@ -6,16 +6,17 @@ require 'spec_helper'
 describe Bwoken::Coffeescript do
   let(:subject) { Bwoken::Coffeescript.new('foo/bar.js') }
   describe '.source_folder' do
-    it "should match 'automation/coffeescript'" do
-      Bwoken.stub(:project_path => 'bar')
-      Bwoken::Coffeescript.source_folder.should match /automation\/coffeescript\Z/
+    it "should match '<bwoken_path>/coffeescript'" do
+      bwoken_path = stub_out(Bwoken, :path, 'bar')
+      Bwoken::Coffeescript.source_folder.should == "#{bwoken_path}/coffeescript"
     end
   end
 
   describe '.destination_folder' do
-    it "should equal 'automation/tmp/javascript'" do
-      Bwoken.stub(:project_path => 'proj_path')
-      subject.destination_folder.should == 'proj_path/automation/tmp/javascript/foo'
+    it "should equal '<bwoken_tmp_path>/javascript'" do
+      Bwoken.stub(:path => '')
+      bwoken_tmp_path = stub_out(Bwoken, :tmp_path, 'bar')
+      subject.destination_folder.should == "#{bwoken_tmp_path}/javascript/foo"
     end
   end
 
