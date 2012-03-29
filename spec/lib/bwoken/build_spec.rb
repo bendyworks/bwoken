@@ -66,20 +66,21 @@ describe Bwoken::Build do
     let(:compilation_output) { "foo\nbar\nbaz\nqux\nquux" }
     let(:stdin) { StringIO.new }
     let(:stdout) { StringIO.new compilation_output }
+    let(:stderr) { StringIO.new }
     let(:raw_exit_code) { 0 }
     let(:wait_thr) { stub(:value => raw_exit_code) }
 
     before { subject.stub(:cmd => 'hi') }
 
     it "executes 'cmd'" do
-      Open3.should_receive(:popen2e)
+      Open3.should_receive(:popen3)
       subject.compile
     end
 
     it 'formats the output' do
-      Open3.should_receive(:popen2e).
+      Open3.should_receive(:popen3).
         any_number_of_times.
-        and_yield(stdin, stdout, wait_thr)
+        and_yield(stdin, stdout, stderr, wait_thr)
 
       stdout = capture_stdout { subject.compile }
 
@@ -89,18 +90,18 @@ describe Bwoken::Build do
     context 'build fails' do
       let(:raw_exit_code) { 1 }
       it 'shows all stdout and stderr' do
-        Open3.should_receive(:popen2e).
+        Open3.should_receive(:popen3).
           any_number_of_times.
-          and_yield(stdin, stdout, wait_thr)
+          and_yield(stdin, stdout, stderr, wait_thr)
 
         stdout = capture_stdout { subject.compile }
 
         stdout.should match /.*Building.*#{compilation_output}.*Build failed/m
       end
       it 'returns the exit status' do
-        Open3.should_receive(:popen2e).
+        Open3.should_receive(:popen3).
           any_number_of_times.
-          and_yield(stdin, stdout, wait_thr)
+          and_yield(stdin, stdout, stderr, wait_thr)
 
         exit_status = 0
         capture_stdout { exit_status = subject.compile }
