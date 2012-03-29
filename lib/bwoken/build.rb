@@ -38,7 +38,7 @@ module Bwoken
 
     def compile
       exit_status = 0
-      Open3.popen2e(cmd) do |stdin, stdout, wait_thr|
+      Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
 
         print "Building"
         out_string = ""
@@ -48,7 +48,7 @@ module Bwoken
           print "."
         end
 
-        exit_status = wait_thr.value
+        exit_status = wait_thr.value if wait_thr
         puts
 
         if exit_status == 0

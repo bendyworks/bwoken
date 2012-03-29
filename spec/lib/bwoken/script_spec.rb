@@ -120,9 +120,9 @@ describe Bwoken::Script do
   end
 
   describe '#run' do
-    it 'runs cmd through Open3.popen2e' do
+    it 'runs cmd through Open3.popen3' do
       subject.stub(:cmd => 'cmd')
-      Open3.should_receive(:popen2e).with('cmd')
+      Open3.should_receive(:popen3).with('cmd')
 
       subject.stub(:make_results_path_dir)
 
@@ -137,9 +137,9 @@ describe Bwoken::Script do
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)
 
-      Open3.should_receive(:popen2e).
+      Open3.should_receive(:popen3).
         any_number_of_times.
-        and_yield('', "a\nb\nc", '')
+        and_yield('', "a\nb\nc", '', '')
 
       subject.run
     end
@@ -152,9 +152,9 @@ describe Bwoken::Script do
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)
 
-      Open3.should_receive(:popen2e).
+      Open3.should_receive(:popen3).
         any_number_of_times.
-        and_yield('', "a\nb\nc", '')
+        and_yield('', "a\nb\nc", '', '')
 
       lambda do
         subject.run
