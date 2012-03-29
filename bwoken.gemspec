@@ -8,10 +8,11 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Runs your UIAutomation tests from the command line for both iPhone and iPad; supports coffeescript}
   gem.homepage      = "https://github.com/bendyworks/bwoken"
 
+  gem.add_dependency 'coffee-script-source'
   gem.add_dependency 'colorful'
   gem.add_dependency 'execjs'
-  gem.add_dependency 'coffee-script-source'
   gem.add_dependency 'json_pure' if RUBY_VERSION =~ /^1\.8\./
+  gem.add_dependency 'rake'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'
 
