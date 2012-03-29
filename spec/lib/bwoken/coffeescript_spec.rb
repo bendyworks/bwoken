@@ -13,9 +13,10 @@ describe Bwoken::Coffeescript do
   end
 
   describe '.destination_folder' do
-    it "should equal '<bwoken_path>/tmp/javascript'" do
-      bwoken_path = stub_out(Bwoken, :path, 'bar')
-      subject.destination_folder.should == "#{bwoken_path}/tmp/javascript/foo"
+    it "should equal '<bwoken_tmp_path>/javascript'" do
+      Bwoken.stub(:path => '')
+      bwoken_tmp_path = stub_out(Bwoken, :tmp_path, 'bar')
+      subject.destination_folder.should == "#{bwoken_tmp_path}/javascript/foo"
     end
   end
 

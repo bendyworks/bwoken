@@ -16,7 +16,6 @@ module Bwoken
       def run_all device_family
         Simulator.device_family = device_family
 
-        puts "#{Bwoken.test_suite_path}/#{device_family}/**/*.js"
         Dir["#{Bwoken.test_suite_path}/#{device_family}/**/*.js"].each do |javascript|
           run(javascript)
         end
@@ -29,7 +28,7 @@ module Bwoken
       end
 
       def trace_file_path
-        File.join(Bwoken.path, 'tmp', 'trace')
+        File.join(Bwoken.tmp_path, 'trace')
       end
 
     end

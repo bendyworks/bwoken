@@ -79,9 +79,9 @@ describe Bwoken::Script do
   end
 
   describe '.trace_file_path' do
-    it 'points to the tmp path' do
-      Bwoken.stub(:path => 'proj_path/integration')
-      subject.class.trace_file_path.should == "proj_path/integration/tmp/trace"
+    it 'points to the trace path inside <bwoken_tmp>' do
+      tmp_path = stub_out(Bwoken, :tmp_path, 'bazzle')
+      subject.class.trace_file_path.should == "#{tmp_path}/trace"
     end
 
   end

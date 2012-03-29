@@ -35,7 +35,7 @@ module Bwoken
       end
 
       def compiled_javascript_path
-        File.join(Bwoken.path, 'tmp', 'javascript')
+        File.join(Bwoken.tmp_path, 'javascript')
       end
 
     end

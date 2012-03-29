@@ -60,7 +60,13 @@ describe Bwoken do
       Bwoken.stub(:project_path => 'foo/bar')
       Bwoken.path.should == "foo/bar/integration"
     end
+  end
 
+  describe '.tmp_path' do
+    it 'returns bwokens temporary directory' do
+      Bwoken.stub(:path => 'foo/bar')
+      Bwoken.tmp_path.should == "foo/bar/tmp"
+    end
   end
 
   describe '.results_path', :stub_proj_path do
