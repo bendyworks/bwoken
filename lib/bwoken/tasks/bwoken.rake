@@ -1,5 +1,31 @@
 require 'bwoken'
 
+namespace :bwoken do
+  desc 'Create bwoken skeleton folders'
+  task :init do
+    paths = []
+    paths << Bwoken.results_path
+    paths << Bwoken.test_suite_path
+    paths << "#{Bwoken::Coffeescript.source_folder}/iphone"
+    paths << "#{Bwoken::Coffeescript.source_folder}/ipad"
+
+    paths.each do |path|
+      puts "Creating #{path}"
+      FileUtils.mkdir_p path
+    end
+
+    example = "#{Bwoken::Coffeescript.source_folder}/iphone/example.coffee"
+    unless File.file?(example)
+      puts "Creating #{example}"
+      open(example, 'w') do |io|
+        io.puts 'target = UIATarget.localTarget()'
+        io.puts 'window = target.frontMostApp().mainWindow()'
+      end
+    end
+
+  end
+end
+
 desc 'Remove result and trace files'
 task :clean do
   print "Removing #{Bwoken.results_path}/* & #{Bwoken::Script.trace_file_path}/* ... "
