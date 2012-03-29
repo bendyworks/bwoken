@@ -55,18 +55,26 @@ describe Bwoken do
     end
   end
 
+  describe '.path' do
+    it 'returns bwokens working directory' do
+      Bwoken.stub(:project_path => 'foo/bar')
+      Bwoken.path.should == "foo/bar/instruments"
+    end
+
+  end
+
   describe '.results_path', :stub_proj_path do
     context "when it doesn't yet exist" do
       it 'creates the results directory' do
         stub_proj_path
-        FileUtils.rm_rf("#{proj_path}/automation")
+        FileUtils.rm_rf("#{proj_path}/instruments")
         Bwoken.results_path
-        File.directory?("#{proj_path}/automation/results").should be_true
+        File.directory?("#{proj_path}/instruments/results").should be_true
       end
     end
     it 'returns the results path' do
       stub_proj_path
-      Bwoken.results_path.should == "#{proj_path}/automation/results"
+      Bwoken.results_path.should == "#{proj_path}/instruments/results"
     end
   end
 

@@ -8,7 +8,7 @@ module Bwoken
     class << self
 
       def source_folder
-        File.join(Bwoken.project_path, 'automation/coffeescript')
+        File.join(Bwoken.path, 'coffeescript')
       end
 
       def test_files
@@ -35,7 +35,7 @@ module Bwoken
       end
 
       def compiled_javascript_path
-        File.join(Bwoken.project_path, 'automation/tmp/javascript')
+        File.join(Bwoken.path, 'tmp/javascript')
       end
 
     end

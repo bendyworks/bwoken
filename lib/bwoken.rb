@@ -34,12 +34,16 @@ module Bwoken
       end
     end
 
+    def path
+      File.join(project_path, 'instruments')
+    end
+
     def workspace
       File.join(project_path, "#{app_name}.xcworkspace")
     end
 
     def results_path
-      File.join(project_path, 'automation', 'results').tap do |dir_name|
+      File.join(path, 'results').tap do |dir_name|
         FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
       end
     end
