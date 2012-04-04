@@ -57,7 +57,9 @@ module Bwoken
           puts
         else
           puts out_string
-          puts 'Build failed'
+          puts "Standard Error:"
+          puts stderr.read
+          puts '## Build failed ##'
           return exit_status
         end
       end
