@@ -1,6 +1,6 @@
-# Bwoken
+# Bwoken ![build status](https://secure.travis-ci.org/bendyworks/bwoken.png?branch=master)
 
-Runs your UIAutomation tests from the command line for both iPhone and iPad. ![build status](https://secure.travis-ci.org/bendyworks/bwoken.png?branch=master)
+Runs your UIAutomation tests from the command line for both iPhone and iPad.
 
 Supports coffeescript.
 
