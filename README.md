@@ -13,6 +13,10 @@ Make sure bwoken is properly installed via one of the methods below. Then, build
 
     $ rake
 
+To run a single file, add a RUN variable relative to `integration/coffeescript/`, ignoring the file extension:
+
+    $ RUN=iphone/focused_test rake
+
 
 ## Installation with rvm (recommended)
 
