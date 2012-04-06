@@ -28,8 +28,8 @@ end
 
 desc 'Remove result and trace files'
 task :clean do
-  print "Removing #{Bwoken.results_path}/* & #{Bwoken::Script.trace_file_path}/* ... "
-  system "rm -rf #{Bwoken.results_path}/* #{Bwoken::Script.trace_file_path}/*"
+  print "Removing #{Bwoken.tmp_path}/* ... "
+  system "rm -rf #{Bwoken.tmp_path}/*"
   puts 'done.'
 end
 

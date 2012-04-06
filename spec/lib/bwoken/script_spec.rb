@@ -14,6 +14,7 @@ describe Bwoken::Script do
     it 'sets the device_family once' do
       Bwoken::Simulator.should_receive(:device_family=).with('foo').once
       Bwoken::Script.stub(:run)
+      Bwoken::Script.stub(:test_files => %w(a b))
       Bwoken.stub(:test_suite_path)
       Bwoken::Script.run_all 'foo'
     end
@@ -22,12 +23,22 @@ describe Bwoken::Script do
       Bwoken::Simulator.stub(:device_family=)
       Bwoken::Script.stub(:run)
       Bwoken.stub(:test_suite_path)
-      Dir.stub(:[] => %w(a b))
+      Bwoken::Script.stub(:test_files => %w(a b))
       Bwoken::Script.should_receive(:run).with('a').once.ordered
       Bwoken::Script.should_receive(:run).with('b').once.ordered
       Bwoken::Script.run_all 'foo'
     end
 
+  end
+
+  describe '.test_files' do
+    it 'returns all test files minus helpers' do
+      Bwoken.stub(:test_suite_path)
+      Bwoken::Script.stub(:device_family)
+      Dir.should_receive(:[]).once.ordered.and_return(%w(a helpers/b c))
+      Dir.should_receive(:[]).once.ordered.and_return(%w(helpers/b))
+      Bwoken::Script.test_files.should == %w(a c)
+    end
   end
 
   describe '.run' do
