@@ -37,6 +37,8 @@ module Bwoken
     end
 
     def compile
+      Bwoken.formatter.before_build_start
+
       exit_status = 0
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
 

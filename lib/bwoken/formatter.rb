@@ -77,6 +77,10 @@ module Bwoken
       out_string
     end
 
+    on :before_build_start do
+      puts 'Building'
+    end
+
     on :build_line do |line|
       print '.'
     end

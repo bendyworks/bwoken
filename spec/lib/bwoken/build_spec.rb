@@ -73,13 +73,24 @@ describe Bwoken::Build do
 
     before { subject.stub(:cmd => 'hi') }
 
+    it 'calls before build starts formatter' do
+      formatter.should_receive(:before_build_start).once
+      formatter.stub(:format_build)
+      formatter.stub(:build_successful)
+      Bwoken.stub(:formatter => formatter)
+      Open3.stub(:popen3)
+      subject.compile
+    end
+
     it "executes 'cmd'" do
+      Bwoken.stub_chain(:formatter, :before_build_start)
       Open3.should_receive(:popen3)
       subject.compile
     end
 
     it 'formats the output' do
       formatter.should_receive(:format_build).once
+      formatter.stub(:before_build_start)
       formatter.stub(:build_successful)
       Bwoken.stub(:formatter => formatter)
 
@@ -94,6 +105,7 @@ describe Bwoken::Build do
       let(:raw_exit_code) { 0 }
       it 'calls the build sussessful formatter' do
         formatter.stub(:format_build)
+        formatter.stub(:before_build_start)
         formatter.should_receive(:build_successful).once
         Bwoken.stub(:formatter => formatter)
 
@@ -109,6 +121,7 @@ describe Bwoken::Build do
       let(:raw_exit_code) { 1 }
       it 'calls the build failed formatter' do
         formatter.stub(:format_build)
+        formatter.stub(:before_build_start)
         formatter.should_receive(:build_failed).once
         Bwoken.stub(:formatter => formatter)
 
@@ -121,6 +134,7 @@ describe Bwoken::Build do
 
       it 'returns the exit status' do
         formatter.stub(:format_build)
+        formatter.stub(:before_build_start)
         formatter.stub(:build_failed)
         Bwoken.stub(:formatter => formatter)
 
