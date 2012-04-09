@@ -30,14 +30,17 @@ module Bwoken
       puts "#{tokens[3].green}\t#{tokens[4..-1].join(' ')}"
     end
 
+    on :before_build_start do
+      print "Building".blue
+    end
+
     on :build_line do |line|
       print '.'.blue
     end
 
     on :build_successful do |line|
       puts
-      puts
-      puts '### Build Successful ###'.green
+      puts 'Build Successful!'.green
       puts
     end
 
@@ -45,7 +48,7 @@ module Bwoken
       puts build_log
       puts 'Standard Error:'.yellow
       puts error_log
-      puts '## Build failed ##'.red
+      puts 'Build failed!'.red
     end
   end
 end
