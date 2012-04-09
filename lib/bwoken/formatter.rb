@@ -19,8 +19,8 @@ module Bwoken
       end
 
       def on name, &block
-        define_method "_on_#{name}_callback" do |line|
-          block.call(line)
+        define_method "_on_#{name}_callback" do |*line|
+          block.call(*line)
         end
       end
 
@@ -74,18 +74,27 @@ module Bwoken
       out_string
     end
 
-    def build_successful build_log
+    on :build_successful do |build_log|
       puts
       puts
       puts "### Build Successful ###"
       puts
     end
 
-    def build_failed build_log, error_log
+    on :build_failed do |build_log, error_log|
       puts build_log
       puts "Standard Error:"
       puts error_log
       puts '## Build failed ##'
+    end
+
+
+    def build_successful build_log
+      _on_build_successful_callback(build_log)
+    end
+
+    def build_failed build_log, error_log
+      _on_build_failed_callback(build_log, error_log)
     end
 
   end
