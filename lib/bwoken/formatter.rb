@@ -35,12 +35,16 @@ module Bwoken
 
         if tokens[3] =~ /Pass/
           _on_pass_callback(line)
+        elsif tokens[3] =~ /Start/
+          _on_start_callback(line)
         elsif tokens[3] =~ /Fail/ || line =~ /Script threw an uncaught JavaScript error/
           exit_status = 1
           _on_fail_callback(line)
         else
           _on_debug_callback(line)
         end
+      elsif line =~ /Instruments Trace Complete/
+        _on_complete_callback(line)
       else
         _on_other_callback(line)
       end
