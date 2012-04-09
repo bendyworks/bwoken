@@ -51,10 +51,9 @@ describe Bwoken::Script do
   describe '.test_files' do
     it 'returns all test files minus helpers' do
       Bwoken.stub(:test_suite_path)
-      Bwoken::Script.stub(:device_family)
-      Dir.should_receive(:[]).once.ordered.and_return(%w(a helpers/b c))
-      Dir.should_receive(:[]).once.ordered.and_return(%w(helpers/b))
-      Bwoken::Script.test_files.should == %w(a c)
+      Dir.should_receive(:[]).once.ordered.and_return(%w(foo/a foo/helpers/b foo/c))
+      Dir.should_receive(:[]).once.ordered.and_return(%w(foo/helpers/b))
+      Bwoken::Script.test_files('foo').should == %w(foo/a foo/c)
     end
   end
 
