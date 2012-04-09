@@ -20,6 +20,10 @@ module Bwoken
       puts "#{tokens[1]} #{tokens[3].green}\t#{tokens[4..-1].join(' ')}"
     end
 
+    on :build_line do |line|
+      print '.'.blue
+    end
+
     on :build_successful do |line|
       puts
       puts

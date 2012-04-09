@@ -68,10 +68,14 @@ module Bwoken
       stdout.each_line do |line|
         out_string << line
         if line.length > 1
-          print '.'
+          _on_build_line_callback(line)
         end
       end
       out_string
+    end
+
+    on :build_line do |line|
+      print '.'
     end
 
     on :build_successful do |build_log|
