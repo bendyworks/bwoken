@@ -141,7 +141,20 @@ describe Bwoken::Script do
   end
 
   describe '#run' do
+    it 'calls before script run with path on the formatter' do
+      path = "foo/bar"
+      subject.stub(:path => path)
+      formatter = double('formatter')
+      formatter.should_receive(:before_script_run).once.with(path)
+      Bwoken.stub(:formatter => formatter)
+      subject.stub(:cmd)
+      subject.stub(:make_results_path_dir)
+      Open3.stub(:popen3)
+      subject.run
+    end
+
     it 'runs cmd through Open3.popen3' do
+      Bwoken.stub_chain(:formatter, :before_script_run)
       subject.stub(:cmd => 'cmd')
       Open3.should_receive(:popen3).with('cmd')
 
@@ -152,8 +165,9 @@ describe Bwoken::Script do
 
     it 'formats the output with the bwoken formatter' do
       formatter = double('formatter')
+      formatter.stub(:before_script_run)
       formatter.should_receive(:format).with("a\nb\nc").and_return(0)
-      Bwoken.should_receive(:formatter).once.and_return(formatter)
+      Bwoken.stub(:formatter).and_return(formatter)
 
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)
@@ -167,8 +181,9 @@ describe Bwoken::Script do
 
     it 'raises when exit_status is non-zero' do
       formatter = double('formatter')
+      formatter.stub(:before_script_run)
       formatter.should_receive(:format).with("a\nb\nc").and_return(1)
-      Bwoken.should_receive(:formatter).once.and_return(formatter)
+      Bwoken.stub(:formatter).and_return(formatter)
 
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)

@@ -7,7 +7,7 @@ module Bwoken
 
     on :complete do |line|
       tokens = line.split(' ')
-      puts "\n#{tokens[0..2].join(' ').cyan}\n Duration: #{tokens[5].sub(';','').underline.bold}\n\n"
+      puts %Q( \n#{"Complete".cyan}\n Duration: #{tokens[5].sub(';','').underline.bold}\n )
     end
 
     on :debug do |line|
@@ -30,6 +30,12 @@ module Bwoken
       puts "#{tokens[3].green}\t#{tokens[4..-1].join(' ')}"
     end
 
+    on :before_script_run do |path|
+      tokens = path.split('/')
+      puts
+      puts "#{tokens[-2]}\t#{tokens[-1]}".cyan
+    end
+
     on :before_build_start do
       print "Building".blue
     end
@@ -41,7 +47,6 @@ module Bwoken
     on :build_successful do |line|
       puts
       puts 'Build Successful!'.green
-      puts
     end
 
     on :build_failed do |build_log, error_log|

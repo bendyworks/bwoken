@@ -66,6 +66,7 @@ module Bwoken
     end
 
     def run
+      Bwoken.formatter.before_script_run path
       make_results_path_dir
 
       exit_status = 0
