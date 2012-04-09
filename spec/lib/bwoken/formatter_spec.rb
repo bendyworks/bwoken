@@ -145,7 +145,7 @@ describe Bwoken::Formatter do
   describe '#build_successful build_log' do
     it 'displays build successful' do
       out = capture_stdout do
-        subject.build_successful('foo')
+        subject.class.build_successful('foo')
       end
       out.should == "\n\n### Build Successful ###\n\n"
     end
@@ -155,14 +155,14 @@ describe Bwoken::Formatter do
   describe '#build_failed build_log, error_log' do
     it 'displays the build_log' do
       out = capture_stdout do
-        subject.build_failed('build', 'bar')
+        subject.class.build_failed('build', 'bar')
       end
       out.should =~ /build/
     end
 
     it 'displays the error_log' do
       out = capture_stdout do
-        subject.build_failed('foo', 'error')
+        subject.class.build_failed('foo', 'error')
       end
       out.should =~ /error/
     end

@@ -10,17 +10,16 @@ module Bwoken
         new.format_build stdout
       end
 
-      def build_successful build_log
-        new.build_successful build_log
-      end
-
-      def build_failed build_log, error_log
-        new.build_failed build_log, error_log
-      end
-
       def on name, &block
         define_method "_on_#{name}_callback" do |*line|
           block.call(*line)
+        end
+      end
+
+      def method_missing(method_name, *args, &block)
+        callback_method_sig = "_on_#{method_name}_callback"
+        if self.instance_methods.include? callback_method_sig.to_sym
+          new.send(callback_method_sig, *args, block)
         end
       end
 
@@ -94,15 +93,6 @@ module Bwoken
       puts "Standard Error:"
       puts error_log
       puts '## Build failed ##'
-    end
-
-
-    def build_successful build_log
-      _on_build_successful_callback(build_log)
-    end
-
-    def build_failed build_log, error_log
-      _on_build_failed_callback(build_log, error_log)
     end
 
   end
