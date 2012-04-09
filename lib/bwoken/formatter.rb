@@ -6,6 +6,18 @@ module Bwoken
         new.format stdout
       end
 
+      def format_build stdout
+        new.format_build stdout
+      end
+
+      def build_successful build_log
+        new.build_successful build_log
+      end
+
+      def build_failed build_log, error_log
+        new.build_failed build_log, error_log
+      end
+
       def on name, &block
         define_method "_on_#{name}_callback" do |line|
           block.call(line)
@@ -49,6 +61,31 @@ module Bwoken
       end
 
       exit_status
+    end
+
+    def format_build stdout
+      out_string = ''
+      stdout.each_line do |line|
+        out_string << line
+        if line.length > 1
+          print '.'
+        end
+      end
+      out_string
+    end
+
+    def build_successful build_log
+      puts
+      puts
+      puts "### Build Successful ###"
+      puts
+    end
+
+    def build_failed build_log, error_log
+      puts build_log
+      puts "Standard Error:"
+      puts error_log
+      puts '## Build failed ##'
     end
 
   end

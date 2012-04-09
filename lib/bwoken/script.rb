@@ -1,8 +1,6 @@
 require 'fileutils'
 require 'open3'
 
-require 'bwoken/formatters/colorful_formatter'
-
 module Bwoken
 
   class ScriptFailedError < RuntimeError; end
@@ -63,10 +61,6 @@ module Bwoken
         #{env_variables_for_cli}"
     end
 
-    def formatter
-      Bwoken::ColorfulFormatter
-    end
-
     def make_results_path_dir
       FileUtils.mkdir_p Bwoken.results_path
     end
@@ -76,7 +70,7 @@ module Bwoken
 
       exit_status = 0
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
-        exit_status = formatter.format stdout
+        exit_status = Bwoken.formatter.format stdout
       end
       raise ScriptFailedError.new('Test Script Failed') unless exit_status == 0
     end
