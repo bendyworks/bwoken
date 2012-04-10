@@ -13,7 +13,8 @@ module Bwoken
     on :debug do |line|
       filtered_line = line.sub(/(target\.frontMostApp.+)\.tap\(\)/, "#{'tap'.yellow} \\1")
       filtered_line = filtered_line.gsub(/\[("[^\]]*")\]/, "[" + '\1'.magenta + "]")
-      filtered_line = filtered_line.sub('target.frontMostApp().mainWindow().','')
+      filtered_line = filtered_line.gsub('()', '')
+      filtered_line = filtered_line.sub(/target.frontMostApp.(?:mainWindow.)?/,'')
       tokens = filtered_line.split(' ')
       puts "#{tokens[3].cyan}\t#{tokens[4..-1].join(' ')}"
     end
