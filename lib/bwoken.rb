@@ -51,6 +51,19 @@ module Bwoken
       File.join(project_path, "#{app_name}.xcworkspace")
     end
 
+    def xcodeproj
+      File.join(project_path, "#{app_name}.xcodeproj")
+    end
+
+    def workspace_or_project_flag
+      ws = workspace
+      if File.exists?(ws)
+        "-workspace #{ws}"
+      else
+        "-project #{xcodeproj}"
+      end
+    end
+
     def results_path
       File.join(tmp_path, 'results').tap do |dir_name|
         FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
