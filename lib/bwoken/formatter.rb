@@ -39,6 +39,8 @@ module Bwoken
         elsif tokens[3] =~ /Fail/ || line =~ /Script threw an uncaught JavaScript error/
           exit_status = 1
           _on_fail_callback(line)
+        elsif tokens[3] =~ /Error/
+          _on_error_callback(line)
         else
           _on_debug_callback(line)
         end

@@ -12,7 +12,12 @@ module Bwoken
 
     on :debug do |line|
       tokens = line.split(' ')
-      # puts "#{tokens[3].cyan}\t#{tokens[4..-1].join(' ')}"
+      puts "#{tokens[3].cyan}\t#{tokens[4..-1].join(' ')}"
+    end
+
+    on :error do |line|
+      tokens = line.split(' ')
+      puts "#{tokens[3].bold.red}\t#{tokens[4..-1].join(' ').underline.bold}"
     end
 
     on :fail do |line|
