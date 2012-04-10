@@ -21,7 +21,7 @@ describe Bwoken do
 
   describe '#formatter' do
     it 'returns Bwoken::ColorfulFormatter' do
-      subject.formatter.should == Bwoken::ColorfulFormatter
+      subject.formatter.should be_kind_of(Bwoken::ColorfulFormatter)
     end
   end
 
