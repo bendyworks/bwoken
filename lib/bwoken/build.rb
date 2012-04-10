@@ -37,29 +37,19 @@ module Bwoken
     end
 
     def compile
+      Bwoken.formatter.before_build_start
+
       exit_status = 0
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
 
-        print "Building"
-        out_string = ""
-
-        stdout.each_line do |line|
-          out_string << line
-          print "."
-        end
+        out_string = Bwoken.formatter.format_build stdout
 
         exit_status = wait_thr.value if wait_thr
-        puts
 
-        if exit_status == 0
-          puts
-          puts "## Build Successful ##"
-          puts
-        else
-          puts out_string
-          puts "Standard Error:"
-          puts stderr.read
-          puts '## Build failed ##'
+        if exit_status == 0 # Build Successful
+          Bwoken.formatter.build_successful out_string
+        else # Build Failed
+          Bwoken.formatter.build_failed out_string, stderr.read
           return exit_status
         end
       end

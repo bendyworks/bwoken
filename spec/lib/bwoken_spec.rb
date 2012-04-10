@@ -19,6 +19,12 @@ describe Bwoken do
     end
   end
 
+  describe '#formatter' do
+    it 'returns Bwoken::ColorfulFormatter' do
+      subject.formatter.should == Bwoken::ColorfulFormatter
+    end
+  end
+
   describe '.project_path' do
     it 'returns the root directory of the project' do
       Dir.should_receive(:pwd).and_return(:foo)

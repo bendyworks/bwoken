@@ -3,7 +3,6 @@ require 'spec_helper'
 require 'bwoken/script'
 
 module Bwoken
-  class ColorfulFormatter; end
   class Simulator; end
 end
 
@@ -58,6 +57,7 @@ describe Bwoken::Script do
   end
 
   describe '.run' do
+
     it 'instantiates a script object' do
       script_double = double('script', :path= => nil, :run => nil)
       Bwoken::Script.should_receive(:new).and_return(script_double)
@@ -132,12 +132,6 @@ describe Bwoken::Script do
     end
   end
 
-  describe '#formatter' do
-    it 'returns Bwoken::ColorfulFormatter' do
-      subject.formatter.should == Bwoken::ColorfulFormatter
-    end
-  end
-
   describe '#make_results_path_dir' do
     it 'creates the results_path directory' do
       Bwoken.stub(:results_path => 'foo')
@@ -147,7 +141,20 @@ describe Bwoken::Script do
   end
 
   describe '#run' do
+    it 'calls before script run with path on the formatter' do
+      path = "foo/bar"
+      subject.stub(:path => path)
+      formatter = double('formatter')
+      formatter.should_receive(:before_script_run).once.with(path)
+      Bwoken.stub(:formatter => formatter)
+      subject.stub(:cmd)
+      subject.stub(:make_results_path_dir)
+      Open3.stub(:popen3)
+      subject.run
+    end
+
     it 'runs cmd through Open3.popen3' do
+      Bwoken.stub_chain(:formatter, :before_script_run)
       subject.stub(:cmd => 'cmd')
       Open3.should_receive(:popen3).with('cmd')
 
@@ -156,10 +163,11 @@ describe Bwoken::Script do
       subject.run
     end
 
-    it 'formats the output with ColorfulFormatter' do
+    it 'formats the output with the bwoken formatter' do
       formatter = double('formatter')
+      formatter.stub(:before_script_run)
       formatter.should_receive(:format).with("a\nb\nc").and_return(0)
-      subject.stub(:formatter => formatter)
+      Bwoken.stub(:formatter).and_return(formatter)
 
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)
@@ -173,8 +181,9 @@ describe Bwoken::Script do
 
     it 'raises when exit_status is non-zero' do
       formatter = double('formatter')
+      formatter.stub(:before_script_run)
       formatter.should_receive(:format).with("a\nb\nc").and_return(1)
-      subject.stub(:formatter => formatter)
+      Bwoken.stub(:formatter).and_return(formatter)
 
       subject.stub(:make_results_path_dir)
       subject.stub(:cmd)

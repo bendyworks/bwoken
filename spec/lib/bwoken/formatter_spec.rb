@@ -117,4 +117,56 @@ describe Bwoken::Formatter do
     end
   end
 
+  describe '#format_build' do
+    it 'replaces output lines with dots' do
+      out = capture_stdout do
+        subject.format_build("a\nb\nc\n")
+      end
+      out.should == '...'
+    end
+
+    it 'ignores empty lines' do
+      out = capture_stdout do
+        subject.format_build("\n\n\n")
+      end
+      out.should == ''
+    end
+
+    it 'returns the passed in build text' do
+      build_text = ''
+      capture_stdout do
+        build_text = subject.format_build("a\nb\nc\n")
+      end
+      build_text.should == "a\nb\nc\n"
+    end
+
+  end
+
+  describe '#build_successful build_log' do
+    it 'displays build successful' do
+      out = capture_stdout do
+        subject.class.build_successful('foo')
+      end
+      out.should == "\n\n### Build Successful ###\n\n"
+    end
+
+  end
+
+  describe '#build_failed build_log, error_log' do
+    it 'displays the build_log' do
+      out = capture_stdout do
+        subject.class.build_failed('build', 'bar')
+      end
+      out.should =~ /build/
+    end
+
+    it 'displays the error_log' do
+      out = capture_stdout do
+        subject.class.build_failed('foo', 'error')
+      end
+      out.should =~ /error/
+    end
+
+  end
+
 end

@@ -1,10 +1,11 @@
 require 'fileutils'
 
-require 'bwoken/version'
-require 'bwoken/simulator'
 require 'bwoken/build'
-require 'bwoken/script'
 require 'bwoken/coffeescript'
+require 'bwoken/formatters/colorful_formatter'
+require 'bwoken/script'
+require 'bwoken/simulator'
+require 'bwoken/version'
 
 module Bwoken
   class << self
@@ -22,6 +23,10 @@ module Bwoken
 
     def app_dir
       File.join(build_path, "#{app_name}.app")
+    end
+
+    def formatter
+      Bwoken::ColorfulFormatter
     end
 
     def project_path
