@@ -26,7 +26,7 @@ module Bwoken
     end
 
     def formatter
-      Bwoken::ColorfulFormatter
+      @formatter ||= Bwoken::ColorfulFormatter.new
     end
 
     def project_path

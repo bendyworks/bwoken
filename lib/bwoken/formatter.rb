@@ -16,13 +16,13 @@ module Bwoken
         end
       end
 
-      def method_missing(method_name, *args, &block)
-        callback_method_sig = "_on_#{method_name}_callback"
-        if self.instance_methods.include? callback_method_sig.to_sym
-          new.send(callback_method_sig, *args, block)
-        end
-      end
+    end
 
+    def method_missing(method_name, *args, &block)
+      callback_method_sig = "_on_#{method_name}_callback"
+      if self.respond_to? callback_method_sig.to_sym
+        send(callback_method_sig, *args, &block)
+      end
     end
 
     def line_demuxer line, exit_status
