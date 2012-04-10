@@ -48,7 +48,8 @@ module Bwoken
     end
 
     def workspace
-      File.join(project_path, "#{app_name}.xcworkspace")
+      workspace = File.join(project_path, "#{app_name}.xcworkspace")
+      File.exists?(workspace) ? workspace : File.join(project_path, "#{app_name}.xcodeproj")
     end
 
     def results_path
