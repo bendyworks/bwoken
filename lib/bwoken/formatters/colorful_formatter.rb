@@ -7,20 +7,25 @@ module Bwoken
 
     on :complete do |line|
       tokens = line.split(' ')
-      puts %Q( \n#{"Complete".cyan}\n Duration: #{tokens[5].sub(';','').underline.bold}\n )
+      puts %Q( \n#{"Complete".send(@failed ? :red : :green)}\n Duration: #{tokens[5].sub(';','').underline.bold}\n )
     end
 
     on :debug do |line|
-      tokens = line.split(' ')
+      filtered_line = line.sub(/(target\.frontMostApp.+)\.tap\(\)/, "#{'tap'.yellow} \\1")
+      filtered_line = filtered_line.gsub(/\[("[^\]]*")\]/, "[" + '\1'.magenta + "]")
+      filtered_line = filtered_line.sub('target.frontMostApp().mainWindow().','')
+      tokens = filtered_line.split(' ')
       puts "#{tokens[3].cyan}\t#{tokens[4..-1].join(' ')}"
     end
 
     on :error do |line|
+      @failed = true
       tokens = line.split(' ')
       puts "#{tokens[3].bold.red}\t#{tokens[4..-1].join(' ').underline.bold}"
     end
 
     on :fail do |line|
+      @failed = true
       tokens = line.split(' ')
       puts "#{tokens[3].bold.red}\t#{tokens[4..-1].join(' ').underline.bold}"
     end
@@ -36,6 +41,7 @@ module Bwoken
     end
 
     on :before_script_run do |path|
+      @failed = false
       tokens = path.split('/')
       puts
       puts "#{tokens[-2]}\t#{tokens[-1]}".cyan
