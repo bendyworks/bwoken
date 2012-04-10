@@ -54,23 +54,30 @@ describe Bwoken do
     end
   end
 
-  describe '.workspace', :stub_proj_path do
+  describe '.workspace_or_project_flag', :stub_proj_path do
     context 'xcworkspace exists' do
-      it 'returns the workspace directory' do
+      it 'returns the workspace flag' do
         File.stub(:exists? => true)
         stub_proj_path
-        Bwoken.workspace.should == "#{proj_path}/FakeProject.xcworkspace"
+        Bwoken.workspace_or_project_flag.should == "-workspace #{proj_path}/FakeProject.xcworkspace"
       end
     end
 
     context 'no xcworkspace' do
-      it 'returns the xcodeproj' do
+      it 'returns the xcodeproj project flag' do
         File.stub(:exists? => false)
         stub_proj_path
-        Bwoken.workspace.should == "#{proj_path}/FakeProject.xcodeproj"
+        Bwoken.workspace_or_project_flag.should == "-project #{proj_path}/FakeProject.xcodeproj"
       end
     end
+  end
 
+
+  describe '.workspace', :stub_proj_path do
+    it 'returns the workspace directory' do
+      stub_proj_path
+      Bwoken.workspace.should == "#{proj_path}/FakeProject.xcworkspace"
+    end
 
   end
 

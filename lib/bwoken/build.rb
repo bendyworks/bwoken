@@ -28,7 +28,7 @@ module Bwoken
 
     def cmd
       "xcodebuild \
-        -workspace #{Bwoken.workspace} \
+        #{Bwoken.workspace_or_project_flag} \
         -scheme #{scheme} \
         -configuration #{configuration} \
         -sdk #{sdk} \

@@ -42,7 +42,8 @@ describe Bwoken::Build do
 
   describe '#cmd' do
     it 'returns the xcodebuild command' do
-      workspace = stub_out(Bwoken, :workspace, :foo)
+      workspace = stub_out(Bwoken, :workspace_or_project_flag, '-workspace foo')
+      workspace_regex = workspace.gsub(/ / ,'\s+')
       scheme = stub_out(subject, :scheme, :bar)
       configuration = stub_out(subject, :configuration, :baz)
       sdk = stub_out(subject, :sdk, :qux)
@@ -50,7 +51,7 @@ describe Bwoken::Build do
 
       regexp = /
         xcodebuild\s+
-        -workspace\s#{workspace}\s+
+        #{workspace_regex}\s+
         -scheme\s#{scheme}\s+
         -configuration\s#{configuration}\s+
         -sdk\s#{sdk}\s+
