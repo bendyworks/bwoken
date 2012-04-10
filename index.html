@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Bwoken by bendyworks</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Bwoken</h1>
+<p>iOS UIAutomation Test Runner</p>
+        <p class="view"><a href="https://github.com/bendyworks/bwoken">View the Project on GitHub <small>bendyworks/bwoken</small></a></p>
+        <ul>
+          <li><a href="https://github.com/bendyworks/bwoken/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bendyworks/bwoken/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bendyworks/bwoken">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Runs your UIAutomation tests from the command line for both iPhone and iPad.</p>
+
+<p>Supports coffeescript.</p>
+
+<p><img src="https://secure.travis-ci.org/bendyworks/bwoken.png?branch=master" alt="build status"></p>
+
+<p><img src="https://raw.github.com/bendyworks/bwoken/master/doc/screenshot.png" alt="screenshot"></p>
+
+<h2>Usage</h2>
+
+<p>Make sure bwoken is properly installed via one of the methods below. Then, build your project and run all your tests via:</p>
+
+<pre><code>$ rake
+</code></pre>
+
+<p>To run a single file, add a RUN variable relative to <code>integration/coffeescript/</code>, ignoring the file extension:</p>
+
+<pre><code>$ RUN=iphone/focused_test rake
+</code></pre>
+
+<h2>Installation with rvm (recommended)</h2>
+
+<p>Ensure Xcode is up-to-date.</p>
+
+<p>Add an .rvmrc file to your project, such as:</p>
+
+<pre><code>$ echo 'rvm use 1.9.3@MyProject --create' &gt;&gt; .rvmrc
+</code></pre>
+
+<p>Install bundler and init:</p>
+
+<pre><code>$ gem install bundler
+$ bundle init
+</code></pre>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'bwoken'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle --binstubs=bundler_bin
+</code></pre>
+
+<p>Ensure your after_cd_bundler rvm hook is enabled:</p>
+
+<pre><code>$ chmod u+x ~/.rvm/hooks/after_cd_bundler
+</code></pre>
+
+<p>Then, add the following line to your <code>Rakefile</code>:</p>
+
+<pre><code>require 'bwoken/tasks'
+</code></pre>
+
+<p>Initialize your bwoken file structure:</p>
+
+<pre><code>$ rake bwoken:init
+</code></pre>
+
+<p>Ensure your project is in a workspace rather than simply a project:</p>
+
+<ul>
+<li>In Xcode, select File -&gt; Save as workspace...</li>
+<li>Save the workspace in the same directory as your .xcodeproj file</li>
+</ul><h2>Installation without rvm (not recommended)</h2>
+
+<p>Ensure Xcode is up-to-date.</p>
+
+<p>Install bundler and init:</p>
+
+<pre><code>$ gem install bundler
+$ bundle init
+</code></pre>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'bwoken'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle --binstubs=bundler_bin
+</code></pre>
+
+<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
+
+<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
+</code></pre>
+
+<p>Then, add the following line to your <code>Rakefile</code>:</p>
+
+<pre><code>require 'bwoken/tasks'
+</code></pre>
+
+<p>Initialize your bwoken file structure:</p>
+
+<pre><code>$ rake bwoken:init
+</code></pre>
+
+<p>Ensure your project is in a workspace rather than simply a project:</p>
+
+<ul>
+<li>In Xcode, select File -&gt; Save as workspace...</li>
+<li>Save the workspace in the same directory as your .xcodeproj file</li>
+</ul><h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/bendyworks">bendyworks</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30753113-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
