@@ -19,9 +19,9 @@ module Bwoken
         end
       end
 
-      def run_one javascript_path
-        Simulator.device_family = javascript_path.split('/').first
-        run File.join(Bwoken.test_suite_path, "#{javascript_path}.js")
+      def run_one feature_name, device_family
+        Simulator.device_family = device_family
+        run File.join(Bwoken.test_suite_path, device_family, "#{feature_name}.js")
       end
 
       def run javascript_path

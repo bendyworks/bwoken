@@ -56,7 +56,7 @@ device_families.each do |device_family|
   namespace device_family do
     task :test => :coffeescript do
       if ENV['RUN']
-        Bwoken::Script.run_one ENV['RUN']
+        Bwoken::Script.run_one ENV['RUN'], device_family
       else
         Bwoken::Script.run_all device_family
       end

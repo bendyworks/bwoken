@@ -31,19 +31,19 @@ describe Bwoken::Script do
   end
 
   describe '.run_one' do
-    let(:script) { 'ipad/foo' }
-    it 'sets the simulator based on beginning of path' do
+    let(:feature) { 'foo' }
+    it 'sets the simulator based on passed in device' do
       Bwoken::Simulator.should_receive(:device_family=).with('ipad').once
       Bwoken.stub(:test_suite_path => 'suite')
       Bwoken::Script.stub(:run)
-      Bwoken::Script.run_one script
+      Bwoken::Script.run_one feature, 'ipad'
     end
 
     it 'runs the one script' do
       Bwoken::Simulator.stub(:device_family=)
       Bwoken.stub(:test_suite_path => 'suite')
-      Bwoken::Script.should_receive(:run).with("suite/#{script}.js").once
-      Bwoken::Script.run_one script
+      Bwoken::Script.should_receive(:run).with("suite/ipad/#{feature}.js").once
+      Bwoken::Script.run_one feature, 'ipad'
     end
   end
 
