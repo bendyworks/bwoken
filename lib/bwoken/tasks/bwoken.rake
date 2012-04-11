@@ -40,7 +40,8 @@ end
 
 desc 'Compile the workspace'
 task :build do
-  Bwoken::Build.new.compile
+  exit_status = Bwoken::Build.new.compile
+  raise unless exit_status == 0
 end
 
 task :coffeescript do
