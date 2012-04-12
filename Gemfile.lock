@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bwoken (0.0.1)
+    bwoken (1.0.0)
       coffee-script-source
       colorful
       execjs
