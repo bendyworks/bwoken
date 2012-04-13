@@ -147,12 +147,12 @@ header ul:before {
 header ul li {
   width: 79px;
   float: left;
-  border-right: 1px solid #3A7CBE;
+  /* border-right: 1px solid #3A7CBE; */
   height: 38px;
 }
 header ul li + li {
   width: 78px;
-  border-left: 1px solid #8BBEF3;
+  /* border-left: 1px solid #8BBEF3; */
 }
 header ul li + li + li {
   border-right: none;
