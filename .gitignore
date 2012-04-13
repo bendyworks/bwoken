@@ -1,0 +1,15 @@
+*.gem
+*.rbc
+# if bundler_bin is in here, then .bundle should not
+# .bundle
+.config
+.yardoc
+InstalledFiles
+_yardoc
+coverage
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+tmp
+bundler_bin
