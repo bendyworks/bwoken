@@ -8,6 +8,7 @@ namespace :bwoken do
     paths << Bwoken.test_suite_path
     paths << "#{Bwoken::Coffeescript.source_folder}/iphone"
     paths << "#{Bwoken::Coffeescript.source_folder}/ipad"
+    paths << "#{Bwoken.path}/javascript"
 
     paths.each do |path|
       puts "Creating #{path}"
@@ -16,8 +17,14 @@ namespace :bwoken do
 
     example = "#{Bwoken::Coffeescript.source_folder}/iphone/example.coffee"
     unless File.file?(example)
+      example_dependancy = File.join(Bwoken.path, 'javascript', 'example_js.js')
       puts "Creating #{example}"
+      puts "Creating #{example_dependancy}"
+      open(example_dependancy, 'w') do |io|
+        io.puts 'Place your javascript here'
+      end
       open(example, 'w') do |io|
+        io.puts '#import ../example_js.js'
         io.puts 'target = UIATarget.localTarget()'
         io.puts 'window = target.frontMostApp().mainWindow()'
       end
@@ -46,6 +53,9 @@ end
 
 task :coffeescript do
   Bwoken::Coffeescript.clean
+  if File.exists?(File.join(Bwoken.path, 'javascript'))
+    system("cp -r #{File.join(Bwoken.path,'javascript')} #{Bwoken.tmp_path}")
+  end
   Bwoken::Coffeescript.compile_all
 end
 

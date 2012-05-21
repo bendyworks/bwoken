@@ -2,7 +2,7 @@
 
 Runs your UIAutomation tests from the command line for both iPhone and iPad.
 
-Supports coffeescript.
+Supports coffeescript and javascript.
 
 ![screenshot](https://raw.github.com/bendyworks/bwoken/master/doc/screenshot.png)
 
