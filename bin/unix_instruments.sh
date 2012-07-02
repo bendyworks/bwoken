@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) 2012 Jonathan Penn (http://cocoamanifest.net)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+
 # unix_instruments
 #
 # A wrapper around `instruments` that returns a proper unix status code
@@ -41,9 +63,12 @@ run_instruments() {
 }
 
 get_error_status() {
-  # Catch "00-00-00 00:00:00 +000 Fail:"
   # Catch "Instruments Trace Error"
-  ruby -e 'exit 1 if STDIN.read =~ /Instruments Trace Error|^\d+-\d+-\d+ \d+:\d+:\d+ [-+]\d+ Fail:/'
+  # Catch "Instruments Usage Error"
+  # Catch "00-00-00 00:00:00 +000 Fail:"
+  # Catch "00-00-00 00:00:00 +000 Error:"
+  # Catch "00-00-00 00:00:00 +000 None: Script threw an uncaught JavaScript error"
+  ruby -e 'exit 1 if STDIN.read =~ /Instruments Usage Error|Instruments Trace Error|^\d+-\d+-\d+ \d+:\d+:\d+ [-+]\d+ (Fail:|Error:|None: Script threw an uncaught JavaScript error)/'
 }
 
 trap cleanup_instruments EXIT
@@ -51,10 +76,14 @@ function cleanup_instruments() {
   # Because we fork instruments in this script, we need to clean up if it's
   # still running because of an error or the user pressed Ctrl-C
   if [[ $pid_instruments -gt 0 ]]; then
-    kill $pid_instruments
+    echo "Cleaning up instruments..."
+    kill -9 $pid_instruments
   fi
 }
 
+# Running this file with "----test" will try to parse an error out of whatever
+# is handed in to it from stdin. Use this method to double check your work if
+# you need a custom "get_error_status" function above.
 if [[ $1 == "----test" ]]; then
   get_error_status
 else
