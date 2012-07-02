@@ -34,7 +34,7 @@ module Bwoken
     end
 
     def test_suite_path
-      Bwoken::Coffeescript.compiled_javascript_path
+      File.join(tmp_path, 'javascript')
     end
 
     def path_to_automation_template
