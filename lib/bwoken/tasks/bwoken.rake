@@ -1,56 +1,47 @@
 require 'bwoken'
 require 'rake/clean'
 
-namespace :bwoken do
-  desc 'Create bwoken skeleton folders'
-  task :init do
-    paths = []
-    paths << Bwoken.results_path
-    paths << Bwoken.test_suite_path
-    paths << "#{Bwoken::Coffeescript.source_folder}/iphone"
-    paths << "#{Bwoken::Coffeescript.source_folder}/ipad"
-    paths << "#{Bwoken.path}/javascript"
+COFFEESCRIPTS      = FileList['integration/coffeescript/**/*.coffee']
+COMPILED_COFFEE    = COFFEESCRIPTS.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
+JAVASCRIPTS        = FileList['integration/javascript/**/*.js']
+COPIED_JAVASCRIPTS = JAVASCRIPTS.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
 
-    paths.each do |path|
-      puts "Creating #{path}"
-      FileUtils.mkdir_p path
-    end
+IPHONE_DIR         = 'integration/coffeescript/iphone'
+IPAD_DIR           = 'integration/coffeescript/ipad'
+VENDOR_JS_DIR      = 'integration/javascript'
+RESULTS_DIR        = 'integration/tmp/results'
+EXAMPLE_COFFEE     = 'integration/coffeescript/iphone/example.coffee'
+EXAMPLE_VENDOR_JS  = 'integration/javascript/example_js.js'
 
-    example = "#{Bwoken::Coffeescript.source_folder}/iphone/example.coffee"
-    unless File.file?(example)
-      example_dependancy = File.join(Bwoken.path, 'javascript', 'example_js.js')
-      puts "Creating #{example}"
-      puts "Creating #{example_dependancy}"
-      open(example_dependancy, 'w') do |io|
-        io.puts 'Place your javascript here'
-      end
-      open(example, 'w') do |io|
-        io.puts '#import ../example_js.js'
-        io.puts 'target = UIATarget.localTarget()'
-        io.puts 'window = target.frontMostApp().mainWindow()'
-      end
-    end
+directory IPHONE_DIR
+directory IPAD_DIR
+directory VENDOR_JS_DIR
+directory RESULTS_DIR
 
+file EXAMPLE_COFFEE => IPHONE_DIR do |t|
+  open(t.name, 'w') do |io|
+    io.puts '#import ../example_js.js'
+    io.puts 'target = UIATarget.localTarget()'
+    io.puts 'window = target.frontMostApp().mainWindow()'
   end
 end
 
-# task :clean_db do
-  # puts "Cleaning the application's sqlite cache database"
-  # system 'rm -rf ls -1d ~/Library/Application\ Support/iPhone\ Simulator/**/Applications/**/Library/Caches/TravisCI*.sqlite'
-# end
+file EXAMPLE_VENDOR_JS => VENDOR_JS_DIR do |t|
+  open(t.name, 'w') do |io|
+    io.puts '/* Place your javascript here */'
+  end
+end
+
+namespace :bwoken do
+  desc 'Create bwoken skeleton folders'
+  task :init => [IPAD_DIR, RESULTS_DIR, EXAMPLE_COFFEE, EXAMPLE_VENDOR_JS]
+end
 
 desc 'Compile the workspace'
 task :build do
   exit_status = Bwoken::Build.new.compile
   raise unless exit_status == 0
 end
-
-
-
-COFFEESCRIPTS = FileList['integration/coffeescript/**/*.coffee']
-COMPILED_COFFEE = COFFEESCRIPTS.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
-JAVASCRIPTS = FileList['integration/javascript/**/*.js']
-COPIED_JAVASCRIPTS = JAVASCRIPTS.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
 
 COMPILED_COFFEE.zip(COFFEESCRIPTS).each do |target, source|
   containing_dir = target.pathmap('%d')
@@ -68,6 +59,7 @@ COPIED_JAVASCRIPTS.zip(JAVASCRIPTS).each do |target, source|
   end
 end
 
+desc 'Compile coffeescript to javascript and copy vendor javascript'
 task :coffeescript => (COMPILED_COFFEE + COPIED_JAVASCRIPTS)
 
 CLEAN.include('integration/tmp/javascript')
