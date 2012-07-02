@@ -16,10 +16,7 @@ module Bwoken
       end
 
       def precompile coffeescript
-        import_strings = coffeescript.scan(/#import .*$/) || []
-        sans_imports = coffeescript.gsub(/#import .*$/,'')
-
-        [import_strings, sans_imports]
+        coffeescript.lines.partition {|line| line =~ /^#import .*$/}.map(&:join)
       end
 
       def compile source, target
@@ -35,8 +32,8 @@ module Bwoken
         chunks = args[0..-2]
 
         File.open(to_hash[:to], 'w') do |io|
-          chunks.flatten.each do |chunk|
-            io.puts chunk
+          chunks.each do |chunk|
+            io.puts chunk unless chunk.nil? || chunk == ''
           end
         end
       end
