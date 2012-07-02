@@ -1,4 +1,5 @@
 require 'bwoken'
+require 'rake/clean'
 
 namespace :bwoken do
   desc 'Create bwoken skeleton folders'
@@ -33,13 +34,6 @@ namespace :bwoken do
   end
 end
 
-desc 'Remove result and trace files'
-task :clean do
-  print "Removing #{Bwoken.tmp_path}/* ... "
-  system "rm -rf #{Bwoken.tmp_path}/*"
-  puts 'done.'
-end
-
 # task :clean_db do
   # puts "Cleaning the application's sqlite cache database"
   # system 'rm -rf ls -1d ~/Library/Application\ Support/iPhone\ Simulator/**/Applications/**/Library/Caches/TravisCI*.sqlite'
@@ -51,13 +45,36 @@ task :build do
   raise unless exit_status == 0
 end
 
-task :coffeescript do
-  Bwoken::Coffeescript.clean
-  if File.exists?(File.join(Bwoken.path, 'javascript'))
-    system("cp -r #{File.join(Bwoken.path,'javascript')} #{Bwoken.tmp_path}")
+
+
+COFFEESCRIPTS = FileList['integration/coffeescript/**/*.coffee']
+COMPILED_COFFEE = COFFEESCRIPTS.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
+JAVASCRIPTS = FileList['integration/javascript/**/*.js']
+COPIED_JAVASCRIPTS = JAVASCRIPTS.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
+
+COMPILED_COFFEE.zip(COFFEESCRIPTS).each do |target, source|
+  containing_dir = target.pathmap('%d')
+  directory containing_dir
+  file target => [containing_dir, source] do
+    Bwoken::Coffeescript.compile source, target
   end
-  Bwoken::Coffeescript.compile_all
 end
+
+COPIED_JAVASCRIPTS.zip(JAVASCRIPTS).each do |target, source|
+  containing_dir = target.pathmap('%d')
+  directory containing_dir
+  file target => [containing_dir, source] do
+    sh "cp #{source} #{target}"
+  end
+end
+
+task :coffeescript => (COMPILED_COFFEE + COPIED_JAVASCRIPTS)
+
+CLEAN.include('integration/tmp/javascript')
+CLOBBER.include('integration/tmp')
+
+
+
 
 device_families = %w(iphone ipad)
 
