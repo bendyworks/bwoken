@@ -15,23 +15,32 @@ module Bwoken
         @context ||= ExecJS.compile(coffee_script_source)
       end
 
-      def compile source, target
-        coffeescript = IO.read(source)
-
+      def precompile coffeescript
         import_strings = coffeescript.scan(/#import .*$/) || []
-        precompiled = coffeescript.gsub(/#import .*$/,'')
+        sans_imports = coffeescript.gsub(/#import .*$/,'')
 
-        javascript = self.context.call('CoffeeScript.compile', precompiled, :bare => true)
+        [import_strings, sans_imports]
+      end
 
-        File.open(target, 'w') do |io|
-          import_strings.each do |import_string|
-            io.puts import_string
+      def compile source, target
+        import_strings, sans_imports = precompile(IO.read source)
+
+        javascript = self.context.call 'CoffeeScript.compile', sans_imports, :bare => true
+
+        write import_strings, javascript, :to => target
+      end
+
+      def write *args
+        to_hash = args.last
+        chunks = args[0..-2]
+
+        File.open(to_hash[:to], 'w') do |io|
+          chunks.flatten.each do |chunk|
+            io.puts chunk
           end
-          io.puts javascript
         end
       end
 
     end
-
   end
 end
