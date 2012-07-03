@@ -1,0 +1,3 @@
+Version 1.0.1 2012-7-3 Brad Grzesiak <brad@bendyworks.com> and Jaymes Waters <jaymes@bendyworks.com>
+
+    * unix_instruments.sh: Updated to make more robust version from gist.github.com/1402258
