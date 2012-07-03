@@ -55,10 +55,22 @@ module Bwoken
 
     def cmd
       "#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh \
+        #{device_flag} \
         -D #{self.class.trace_file_path} \
         -t #{Bwoken.path_to_automation_template} \
         #{Bwoken.app_dir} \
         #{env_variables_for_cli}"
+    end
+
+    def device_flag
+      ioreg = `ioreg -w 0 -rc IOUSBDevice -k SupportsIPhoneOS`
+      device_uuid = ioreg[/"USB Serial Number" = "([0-9a-z]+)"/] && $1
+
+      if device_uuid
+        "-w #{device_uuid}"
+      else
+        ''
+      end
     end
 
     def make_results_path_dir
