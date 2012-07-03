@@ -63,9 +63,7 @@ module Bwoken
     end
 
     def device_flag
-      ioreg = `ioreg -w 0 -rc IOUSBDevice -k SupportsIPhoneOS`
-      device_uuid = ioreg[/"USB Serial Number" = "([0-9a-z]+)"/] && $1
-
+      device_uuid = Bwoken::Device.uuid
       if device_uuid
         "-w #{device_uuid}"
       else

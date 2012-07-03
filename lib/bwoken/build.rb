@@ -12,7 +12,11 @@ module Bwoken
     end
 
     def sdk
-      'iphoneos'
+      if Bwoken::Device.connected?
+        'iphoneos'
+      else
+        'iphonesimulator5.1'
+      end
     end
 
     def env_variables

@@ -5,6 +5,7 @@ require 'bwoken/coffeescript'
 require 'bwoken/formatters/colorful_formatter'
 require 'bwoken/script'
 require 'bwoken/simulator'
+require 'bwoken/device'
 require 'bwoken/version'
 
 module Bwoken
