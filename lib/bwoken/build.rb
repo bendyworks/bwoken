@@ -12,7 +12,7 @@ module Bwoken
     end
 
     def sdk
-      'iphonesimulator5.1'
+      'iphoneos'
     end
 
     def env_variables
