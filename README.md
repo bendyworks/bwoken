@@ -98,7 +98,7 @@ Ensure your project is in a workspace rather than simply a project:
 * Save the workspace in the same directory as your .xcodeproj file
 
 We have tried this on a standard lion installation and it works.
-If you have issues please open an [issue][issues] and let us know.
+If you have issues please open an [issue](/bendyworks/bwoken/issues) and let us know.
 
 
 ## Contributing
