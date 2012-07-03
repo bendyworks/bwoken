@@ -67,20 +67,22 @@ Ensure Xcode is up-to-date.
 
 Install bundler and init:
 
-    $ gem install bundler
+    $ sudo gem install bundler
     $ bundle init
 
 Add this line to your application's Gemfile:
 
     gem 'bwoken'
 
-And then execute:
-
-    $ bundle --binstubs=bundler_bin
-
 Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:
 
     $ echo 'export PATH=bundler_bin:$PATH' >> ~/.bash_profile
+
+Restart your terminal.
+
+And then execute:
+
+    $ bundle --binstubs=bundler_bin
 
 Then, add the following line to your `Rakefile`:
 
@@ -94,6 +96,9 @@ Ensure your project is in a workspace rather than simply a project:
 
 * In Xcode, select File -> Save as workspace...
 * Save the workspace in the same directory as your .xcodeproj file
+
+We have tried this on a standard lion installation and it works.
+If you have issues please open an [issue][issues] and let us know.
 
 
 ## Contributing
