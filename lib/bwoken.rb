@@ -35,7 +35,7 @@ module Bwoken
     end
 
     def path_to_automation_template
-      '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
+      "#{`xcode-select -print-path`.strip}/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
     end
 
     %w(xcworkspace xcodeproj).each do |xcode_root|
