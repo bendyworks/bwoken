@@ -1,7 +1,16 @@
 require 'open3'
+require 'bwoken/device'
 
 module Bwoken
   class Build
+
+    def app_dir
+      File.join(configuration_build_dir, "#{Bwoken.app_name}.app")
+    end
+
+    def build_path
+      File.join(Bwoken.project_path, 'build')
+    end
 
     def scheme
       Bwoken.app_name
@@ -12,13 +21,21 @@ module Bwoken
     end
 
     def sdk
-      'iphonesimulator5.1'
+      if Bwoken::Device.connected?
+        'iphoneos'
+      else
+        'iphonesimulator5.1'
+      end
+    end
+
+    def configuration_build_dir
+      File.join(build_path, sdk)
     end
 
     def env_variables
       {
         'GCC_PREPROCESSOR_DEFINITIONS' => 'TEST_MODE=1',
-        'CONFIGURATION_BUILD_DIR' => Bwoken.build_path
+        'CONFIGURATION_BUILD_DIR' => configuration_build_dir
       }
     end
 
@@ -29,7 +46,7 @@ module Bwoken
     def cmd
       "xcodebuild \
         #{Bwoken.workspace_or_project_flag} \
-        #{"-scheme #{scheme}" if Bwoken.workspace} \
+        #{"-scheme #{scheme}" if Bwoken.xcworkspace} \
         -configuration #{configuration} \
         -sdk #{sdk} \
         #{variables_for_cli} \

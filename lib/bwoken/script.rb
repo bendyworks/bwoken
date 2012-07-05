@@ -1,6 +1,8 @@
 require 'fileutils'
 require 'open3'
 
+require 'bwoken/build'
+
 module Bwoken
 
   class ScriptFailedError < RuntimeError; end
@@ -54,11 +56,21 @@ module Bwoken
     end
 
     def cmd
+      build = Bwoken::Build.new
       "#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh \
+        #{device_flag} \
         -D #{self.class.trace_file_path} \
         -t #{Bwoken.path_to_automation_template} \
-        #{Bwoken.app_dir} \
+        #{build.app_dir} \
         #{env_variables_for_cli}"
+    end
+
+    def device_flag
+      if Bwoken::Device.connected?
+        "-w #{Bwoken::Device.uuid}"
+      else
+        ''
+      end
     end
 
     def make_results_path_dir

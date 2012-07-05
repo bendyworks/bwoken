@@ -115,20 +115,53 @@ describe Bwoken::Script do
 
 
   describe '#cmd' do
-    it 'returns the unix_instruments command' do
-      path_to_automation_template = stub_out(Bwoken, :path_to_automation_template, 'foo')
-      trace_file_path = stub_out(subject.class, :trace_file_path, 'trace_file_path')
-      app_dir = stub_out(Bwoken, :app_dir, 'bar')
-      env_variables_for_cli = stub_out(subject, :env_variables_for_cli, 'baz')
+    context 'when a device is connected' do
 
-      regexp = /
-        unix_instruments\.sh\s+
-        -D\s#{trace_file_path}\s+
-        -t\s#{path_to_automation_template}\s+
-        #{app_dir}\s+
-        #{env_variables_for_cli}/x
+      let(:uuid) { 'abcdef1234567890' }
+      before do
+        Bwoken::Device.stub(:connected? => true)
+        Bwoken::Device.stub(:uuid => uuid)
+      end
 
-      subject.cmd.should match regexp
+      it 'returns the unix_instruments command' do
+        path_to_automation_template = stub_out(Bwoken, :path_to_automation_template, 'foo')
+        trace_file_path = stub_out(subject.class, :trace_file_path, 'trace_file_path')
+        app_dir = 'bar'
+        env_variables_for_cli = stub_out(subject, :env_variables_for_cli, 'baz')
+        build = mock(Bwoken::Build, :app_dir => app_dir)
+        Bwoken::Build.stub(:new => build)
+
+        regexp = /
+          unix_instruments\.sh\s+
+          -w\s#{uuid}\s+
+          -D\s#{trace_file_path}\s+
+          -t\s#{path_to_automation_template}\s+
+          #{app_dir}\s+
+          #{env_variables_for_cli}/x
+
+        subject.cmd.should match regexp
+      end
+    end
+
+    context 'when a device is not connected' do
+      before { Bwoken::Device.stub(:connected? => false) }
+      it 'returns the unix_instruments command' do
+        path_to_automation_template = stub_out(Bwoken, :path_to_automation_template, 'foo')
+        trace_file_path = stub_out(subject.class, :trace_file_path, 'trace_file_path')
+        app_dir = 'bar'
+        env_variables_for_cli = stub_out(subject, :env_variables_for_cli, 'baz')
+        build = mock(Bwoken::Build, :app_dir => app_dir)
+        Bwoken::Build.stub(:new => build)
+
+        regexp = /
+          unix_instruments\.sh\s+
+          -D\s#{trace_file_path}\s+
+          -t\s#{path_to_automation_template}\s+
+          #{app_dir}\s+
+          #{env_variables_for_cli}/x
+
+        subject.cmd.should match regexp
+      end
     end
   end
 

@@ -8,14 +8,8 @@ describe Bwoken do
   describe '.app_name', :stub_proj_path do
     it "returns the app's name without the .app prefix" do
       stub_proj_path
+      Bwoken.stub(:workspace_or_project => "#{proj_path}/FakeProject.xcworkspace")
       Bwoken.app_name.should == 'FakeProject'
-    end
-  end
-
-  describe '.app_dir', :stub_proj_path do
-    it "returns the app's name with the .app suffix" do
-      stub_proj_path
-      Bwoken.app_dir.should == "#{proj_path}/build/FakeProject.app"
     end
   end
 
@@ -38,27 +32,12 @@ describe Bwoken do
     end
   end
 
-  describe '.build_path', :stub_proj_path do
-    context "when it doesn't yet exist" do
-      it 'creates the build directory' do
-        stub_proj_path
-        FileUtils.rm_r("#{proj_path}/build")
-        Bwoken.build_path
-        File.directory?("#{proj_path}/build").should be_true
-      end
-    end
-
-    it 'returns the build directory' do
-      stub_proj_path
-      Bwoken.build_path.should == "#{proj_path}/build"
-    end
-  end
-
   describe '.workspace_or_project_flag', :stub_proj_path do
     context 'xcworkspace exists' do
       it 'returns the workspace flag' do
         File.stub(:exists? => true)
         stub_proj_path
+        Bwoken.stub(:xcworkspace => "#{proj_path}/FakeProject.xcworkspace")
         Bwoken.workspace_or_project_flag.should == "-workspace #{proj_path}/FakeProject.xcworkspace"
       end
     end
@@ -67,18 +46,23 @@ describe Bwoken do
       it 'returns the xcodeproj project flag' do
         File.stub(:exists? => false)
         stub_proj_path
+        Bwoken.stub(:xcodeproj => "#{proj_path}/FakeProject.xcodeproj")
         Bwoken.workspace_or_project_flag.should == "-project #{proj_path}/FakeProject.xcodeproj"
       end
     end
   end
 
 
-  describe '.workspace', :stub_proj_path do
+  describe '.xcworkspace', :stub_proj_path do
     it 'returns the workspace directory' do
       stub_proj_path
-      Bwoken.workspace.should == "#{proj_path}/FakeProject.xcworkspace"
-    end
 
+      Dir.should_receive(:[]).
+        with("#{proj_path}/*.xcworkspace").
+        and_return(["#{proj_path}/FakeProject.xcworkspace"])
+
+      Bwoken.xcworkspace
+    end
   end
 
   describe '.path' do
