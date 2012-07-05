@@ -6,29 +6,60 @@ require 'bwoken/build'
 
 describe Bwoken::Build do
 
-  describe '#scheme' do
+  describe '.app_dir', :stub_proj_path do
+    it "returns the app's name with the .app suffix" do
+      stub_proj_path
+      subject.stub(:configuration_build_dir => "#{proj_path}/build/the_sdk")
+      Bwoken.stub(:app_name => "FakeProject")
+      subject.app_dir.should == "#{proj_path}/build/the_sdk/FakeProject.app"
+    end
+  end
+
+  describe '.configuration_build_dir', :stub_proj_path do
+    it 'returns the build directory with the sdk' do
+      subject.stub(:build_path => "#{proj_path}/build")
+      subject.stub(:sdk => "an_sdk")
+      subject.configuration_build_dir.should == "#{proj_path}/build/an_sdk"
+    end
+  end
+
+  describe '.build_path', :stub_proj_path do
+    it 'returns the build directory' do
+      Bwoken.stub(:project_path => proj_path)
+      subject.build_path.should == "#{proj_path}/build"
+    end
+  end
+
+  describe '.scheme' do
     it 'uses the app name' do
       Bwoken.should_receive(:app_name).and_return(:foo)
       subject.scheme.should == :foo
     end
   end
 
-  describe '#configuration' do
+  describe '.configuration' do
     it 'is always Debug' do
       subject.configuration.should == 'Debug'
     end
   end
 
-  describe '#sdk' do
-    it 'is always iphonesimulator5.1' do
-      subject.sdk.should == 'iphonesimulator5.1'
+  describe '.sdk' do
+    context 'device connected' do
+      before { Bwoken::Device.stub(:connected? => true) }
+      its(:sdk) { should == 'iphoneos' }
+    end
+
+    context 'device not connected' do
+      before { Bwoken::Device.stub(:connected? => false) }
+      its(:sdk) { should == 'iphonesimulator5.1' }
     end
   end
 
   describe '#env_variables', :stub_proj_path do
     it 'sets the CONFIGURATION_BUILD_DIR to the build path' do
-      Bwoken.stub(:build_path => :foo)
-      subject.env_variables['CONFIGURATION_BUILD_DIR'].should == :foo
+      subject.stub(:build_path => 'foo')
+      subject.stub(:sdk => 'bar')
+      subject.env_variables['CONFIGURATION_BUILD_DIR'].should == 'foo/bar'
     end
     it 'sets preprocessor definitions'
   end
@@ -42,6 +73,7 @@ describe Bwoken::Build do
 
   describe '#cmd' do
     it 'returns the xcodebuild command' do
+      Bwoken.stub(:xcworkspace => 'foo')
       workspace = stub_out(Bwoken, :workspace_or_project_flag, '-workspace foo')
       workspace_regex = workspace.gsub(/ / ,'\s+')
       scheme = stub_out(subject, :scheme, :bar)

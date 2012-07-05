@@ -19,11 +19,7 @@ module Bwoken
     end
 
     def app_name
-      File.basename(project_path)
-    end
-
-    def app_dir
-      File.join(build_path, "#{app_name}.app")
+      File.basename(File.basename(workspace_or_project, '.xcodeproj'), '.xcworkspace')
     end
 
     def formatter
@@ -42,22 +38,21 @@ module Bwoken
       '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
     end
 
-    def build_path
-      File.join(project_path, 'build').tap do |dir_name|
-        FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
+    %w(xcworkspace xcodeproj).each do |xcode_root|
+      define_method xcode_root do
+        paths = Dir["#{project_path}/*.#{xcode_root}"]
+        fail "Error: Found more than one #{xcode_root} file in root" if paths.count > 1
+        paths.first
       end
     end
 
-    def workspace
-      File.join(project_path, "#{app_name}.xcworkspace")
-    end
-
-    def xcodeproj
-      File.join(project_path, "#{app_name}.xcodeproj")
+    def workspace_or_project
+      ws = xcworkspace
+      File.exists?(ws) ? ws : xcodeproj
     end
 
     def workspace_or_project_flag
-      ws = workspace
+      ws = xcworkspace
       if File.exists?(ws)
         "-workspace #{ws}"
       else

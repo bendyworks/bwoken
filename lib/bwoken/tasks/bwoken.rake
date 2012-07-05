@@ -6,6 +6,7 @@ COMPILED_COFFEE    = COFFEESCRIPTS.pathmap('%{^integration/coffeescript,integrat
 JAVASCRIPTS        = FileList['integration/javascript/**/*.js']
 COPIED_JAVASCRIPTS = JAVASCRIPTS.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
 
+BUILD_DIR          = 'build'
 IPHONE_DIR         = 'integration/coffeescript/iphone'
 IPAD_DIR           = 'integration/coffeescript/ipad'
 VENDOR_JS_DIR      = 'integration/javascript'
@@ -17,6 +18,7 @@ directory IPHONE_DIR
 directory IPAD_DIR
 directory VENDOR_JS_DIR
 directory RESULTS_DIR
+directory BUILD_DIR
 
 file EXAMPLE_COFFEE => IPHONE_DIR do |t|
   open(t.name, 'w') do |io|
@@ -35,12 +37,6 @@ end
 namespace :bwoken do
   desc 'Create bwoken skeleton folders'
   task :init => [IPAD_DIR, RESULTS_DIR, EXAMPLE_COFFEE, EXAMPLE_VENDOR_JS]
-end
-
-desc 'Compile the workspace'
-task :build do
-  exit_status = Bwoken::Build.new.compile
-  raise unless exit_status == 0
 end
 
 COMPILED_COFFEE.zip(COFFEESCRIPTS).each do |target, source|
@@ -67,13 +63,19 @@ CLOBBER.include('integration/tmp')
 
 
 
+desc 'Compile the workspace'
+task :build do
+  exit_status = Bwoken::Build.new.compile
+  raise unless exit_status == 0
+end
+
 
 device_families = %w(iphone ipad)
 
 device_families.each do |device_family|
 
   namespace device_family do
-    task :test => :coffeescript do
+    task :test => [RESULTS_DIR, :coffeescript] do
       if ENV['RUN']
         Bwoken::Script.run_one ENV['RUN'], device_family
       else
