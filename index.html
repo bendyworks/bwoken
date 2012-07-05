@@ -25,15 +25,21 @@
         </ul>
       </header>
       <section>
-        <p>Runs your UIAutomation tests from the command line for both iPhone and iPad.</p>
+        <p>Runs your UIAutomation tests from the command line for both iPhone and iPad, in the simulator or on your device.</p>
 
-<p>Supports coffeescript.</p>
+<p>Supports coffeescript and javascript.</p>
 
 <p><img src="https://secure.travis-ci.org/bendyworks/bwoken.png?branch=master" alt="build status"></p>
 
 <p><iframe src="http://player.vimeo.com/video/41046577" width="600" height="337" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
 
 <h2>Usage</h2>
+
+<h3>Simulator or Device?</h3>
+
+<p>To run bwoken tests on your device, just plug it in! And if you want to run tests in the simulator, just unplug it!</p>
+
+<h3>Running tests</h3>
 
 <p>Make sure bwoken is properly installed via one of the methods below. Then, build your project and run all your tests via:</p>
 
@@ -45,6 +51,51 @@
 <pre><code>$ RUN=iphone/focused_test rake
 </code></pre>
 
+<h2>Basic Installation</h2>
+
+<p>N.B.: This is the simplest way to get started and try out bwoken, but the recommended method is with RVM (see below). You can use this method without affecting your ability to later use RVM.</p>
+
+<p>Ensure Xcode is up-to-date.</p>
+
+<p>Install bundler and init:</p>
+
+<pre><code>$ sudo gem install bundler
+$ bundle init
+</code></pre>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'bwoken'
+</code></pre>
+
+<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
+
+<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
+</code></pre>
+
+<p>Restart your terminal.</p>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle --binstubs=bundler_bin
+</code></pre>
+
+<p>Then, add the following line to your <code>Rakefile</code>:</p>
+
+<pre><code>require 'bwoken/tasks'
+</code></pre>
+
+<p>Initialize your bwoken file structure:</p>
+
+<pre><code>$ rake bwoken:init
+</code></pre>
+
+<p>Ensure your project is in a workspace rather than simply a project:</p>
+
+<ul>
+<li>In Xcode, select File -&gt; Save as workspace...</li>
+<li>Save the workspace in the same directory as your .xcodeproj file</li>
+</ul>
 <h2>Installation with rvm (recommended)</h2>
 
 <p>Ensure Xcode is up-to-date.</p>
@@ -64,6 +115,13 @@ $ bundle init
 
 <pre><code>gem 'bwoken'
 </code></pre>
+
+<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
+
+<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
+</code></pre>
+
+<p>Restart your terminal.</p>
 
 <p>And then execute:</p>
 
@@ -90,47 +148,9 @@ $ bundle init
 <ul>
 <li>In Xcode, select File -&gt; Save as workspace...</li>
 <li>Save the workspace in the same directory as your .xcodeproj file</li>
-</ul><h2>Installation without rvm (not recommended)</h2>
+</ul>
 
-<p>Ensure Xcode is up-to-date.</p>
-
-<p>Install bundler and init:</p>
-
-<pre><code>$ gem install bundler
-$ bundle init
-</code></pre>
-
-<p>Add this line to your application's Gemfile:</p>
-
-<pre><code>gem 'bwoken'
-</code></pre>
-
-<p>And then execute:</p>
-
-<pre><code>$ bundle --binstubs=bundler_bin
-</code></pre>
-
-<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
-
-<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
-</code></pre>
-
-<p>Then, add the following line to your <code>Rakefile</code>:</p>
-
-<pre><code>require 'bwoken/tasks'
-</code></pre>
-
-<p>Initialize your bwoken file structure:</p>
-
-<pre><code>$ rake bwoken:init
-</code></pre>
-
-<p>Ensure your project is in a workspace rather than simply a project:</p>
-
-<ul>
-<li>In Xcode, select File -&gt; Save as workspace...</li>
-<li>Save the workspace in the same directory as your .xcodeproj file</li>
-</ul><h2>Contributing</h2>
+<h2>Contributing</h2>
 
 <ol>
 <li>Fork it</li>
