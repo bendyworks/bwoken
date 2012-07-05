@@ -1,6 +1,6 @@
 require 'fileutils'
 require 'coffee_script/source'
-require 'json' if RUBY_VERSION =~ /^1\.8\./
+require 'json'
 require 'execjs'
 
 module Bwoken
@@ -8,7 +8,13 @@ module Bwoken
     class << self
 
       def coffee_script_source
-        IO.read(CoffeeScript::Source.bundled_path)
+        return @coffeescript if @coffeescript
+
+        @coffeescript = ''
+        open(CoffeeScript::Source.bundled_path) do |f|
+          @coffeescript << f.read
+        end
+        @coffeescript
       end
 
       def context
