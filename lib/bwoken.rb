@@ -48,12 +48,12 @@ module Bwoken
 
     def workspace_or_project
       ws = xcworkspace
-      File.exists?(ws) ? ws : xcodeproj
+      ws && File.exists?(ws) ? ws : xcodeproj
     end
 
     def workspace_or_project_flag
       ws = xcworkspace
-      if File.exists?(ws)
+      if ws && File.exists?(ws)
         "-workspace #{ws}"
       else
         "-project #{xcodeproj}"
