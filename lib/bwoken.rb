@@ -33,9 +33,22 @@ module Bwoken
     def test_suite_path
       File.join(tmp_path, 'javascript')
     end
+    
+    def path_to_developer_dir
+      `xcode-select -print-path`.strip
+    end
 
     def path_to_automation_template
-      '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
+      template = nil
+      locations = [
+        path_to_developer_dir + '/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate',
+        path_to_developer_dir + '/../Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate',
+      ]
+      locations.each do |path|
+        template = path if File.exists?(path)
+        break if template
+      end
+      template
     end
 
     %w(xcworkspace xcodeproj).each do |xcode_root|
