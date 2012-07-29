@@ -24,18 +24,21 @@ module Bwoken
       if Bwoken::Device.connected?
         'iphoneos'
       else
-        'iphonesimulator5.1'
+        'iphonesimulator'
       end
     end
 
     def configuration_build_dir
       File.join(build_path, sdk)
     end
+    
+    def xcconfig
+      File.join(File.dirname(__FILE__), 'configs', 'bwoken.xcconfig')
+    end
 
     def env_variables
       {
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'TEST_MODE=1',
-        'CONFIGURATION_BUILD_DIR' => configuration_build_dir
+        'BWOKEN_CONFIGURATION_BUILD_DIR' => configuration_build_dir
       }
     end
 
@@ -49,6 +52,7 @@ module Bwoken
         #{"-scheme #{scheme}" if Bwoken.xcworkspace} \
         -configuration #{configuration} \
         -sdk #{sdk} \
+        -xcconfig #{xcconfig} \
         #{variables_for_cli} \
         clean build"
     end
