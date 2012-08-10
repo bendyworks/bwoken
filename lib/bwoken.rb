@@ -40,11 +40,8 @@ module Bwoken
 
     def path_to_automation_template
       template = nil
-      locations = [
-        path_to_developer_dir + '/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate',
-        path_to_developer_dir + '/../Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate',
-      ]
-      locations.each do |path|
+      `xcrun instruments -s 2>&1 | grep Automation.tracetemplate`.split("\n").each do |path|
+        path = path.gsub(/^\s*"|",\s*$/, "")
         template = path if File.exists?(path)
         break if template
       end
