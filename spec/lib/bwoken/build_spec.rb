@@ -51,15 +51,15 @@ describe Bwoken::Build do
 
     context 'device not connected' do
       before { Bwoken::Device.stub(:connected? => false) }
-      its(:sdk) { should == 'iphonesimulator5.1' }
+      its(:sdk) { should == 'iphonesimulator' }
     end
   end
 
   describe '#env_variables', :stub_proj_path do
-    it 'sets the CONFIGURATION_BUILD_DIR to the build path' do
+    it 'sets the BWOKEN_CONFIGURATION_BUILD_DIR to the build path' do
       subject.stub(:build_path => 'foo')
       subject.stub(:sdk => 'bar')
-      subject.env_variables['CONFIGURATION_BUILD_DIR'].should == 'foo/bar'
+      subject.env_variables['BWOKEN_CONFIGURATION_BUILD_DIR'].should == 'foo/bar'
     end
     it 'sets preprocessor definitions'
   end
@@ -79,6 +79,7 @@ describe Bwoken::Build do
       scheme = stub_out(subject, :scheme, :bar)
       configuration = stub_out(subject, :configuration, :baz)
       sdk = stub_out(subject, :sdk, :qux)
+      xcconfig = stub_out(subject, :xcconfig, :quz)
       variables_for_cli = stub_out(subject, :variables_for_cli, :quux)
 
       regexp = /
@@ -87,6 +88,7 @@ describe Bwoken::Build do
         -scheme\s#{scheme}\s+
         -configuration\s#{configuration}\s+
         -sdk\s#{sdk}\s+
+        -xcconfig\s#{xcconfig}\s+
         #{variables_for_cli}\s+
         clean\s+build
         /x

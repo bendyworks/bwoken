@@ -64,7 +64,7 @@ CLOBBER.include('integration/tmp')
 
 
 desc 'Compile the workspace'
-task :build do
+task :compile do
   exit_status = Bwoken::Build.new.compile
   raise unless exit_status == 0
 end
@@ -100,4 +100,4 @@ task :test do
   end
 end
 
-task :default => [:build, :test]
+task :default => [:compile, :test]

@@ -33,9 +33,19 @@ module Bwoken
     def test_suite_path
       File.join(tmp_path, 'javascript')
     end
+    
+    def path_to_developer_dir
+      `xcode-select -print-path`.strip
+    end
 
     def path_to_automation_template
-      '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
+      template = nil
+      `xcrun instruments -s 2>&1 | grep Automation.tracetemplate`.split("\n").each do |path|
+        path = path.gsub(/^\s*"|",\s*$/, "")
+        template = path if File.exists?(path)
+        break if template
+      end
+      template
     end
 
     %w(xcworkspace xcodeproj).each do |xcode_root|
@@ -48,12 +58,12 @@ module Bwoken
 
     def workspace_or_project
       ws = xcworkspace
-      File.exists?(ws) ? ws : xcodeproj
+      ws && File.exists?(ws) ? ws : xcodeproj
     end
 
     def workspace_or_project_flag
       ws = xcworkspace
-      if File.exists?(ws)
+      if ws && File.exists?(ws)
         "-workspace #{ws}"
       else
         "-project #{xcodeproj}"
