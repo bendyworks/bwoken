@@ -67,5 +67,9 @@ module Bwoken
       puts error_log
       puts 'Build failed!'.red
     end
+
+    on :other do |line|
+      nil
+    end
   end
 end
