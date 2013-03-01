@@ -33,7 +33,7 @@ module Bwoken
     def test_suite_path
       File.join(tmp_path, 'javascript')
     end
-    
+
     def path_to_developer_dir
       `xcode-select -print-path`.strip
     end

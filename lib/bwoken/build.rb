@@ -21,17 +21,17 @@ module Bwoken
     end
 
     def sdk
-      if Bwoken::Device.connected?
-        'iphoneos'
-      else
+      if Bwoken::Device.should_use_simulator?
         'iphonesimulator'
+      else
+        'iphoneos'
       end
     end
 
     def configuration_build_dir
       File.join(build_path, sdk)
     end
-    
+
     def xcconfig
       File.join(File.dirname(__FILE__), 'configs', 'bwoken.xcconfig')
     end

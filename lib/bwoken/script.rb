@@ -66,10 +66,10 @@ module Bwoken
     end
 
     def device_flag
-      if Bwoken::Device.connected?
-        "-w #{Bwoken::Device.uuid}"
-      else
+      if Bwoken::Device.should_use_simulator?
         ''
+      else
+        "-w #{Bwoken::Device.uuid}"
       end
     end
 

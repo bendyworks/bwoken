@@ -44,14 +44,14 @@ describe Bwoken::Build do
   end
 
   describe '.sdk' do
-    context 'device connected' do
-      before { Bwoken::Device.stub(:connected? => true) }
-      its(:sdk) { should == 'iphoneos' }
+    context 'want to use simulator' do
+      before { Bwoken::Device.stub(:should_use_simulator? => true) }
+      its(:sdk) { should == 'iphonesimulator' }
     end
 
-    context 'device not connected' do
-      before { Bwoken::Device.stub(:connected? => false) }
-      its(:sdk) { should == 'iphonesimulator' }
+    context 'do not want to use simulator' do
+      before { Bwoken::Device.stub(:should_use_simulator? => false) }
+      its(:sdk) { should == 'iphoneos' }
     end
   end
 

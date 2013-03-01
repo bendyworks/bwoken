@@ -115,53 +115,53 @@ describe Bwoken::Script do
 
 
   describe '#cmd' do
-    context 'when a device is connected' do
+    let!(:trace_file_path) { stub_out(subject.class, :trace_file_path, 'trace_file_path') }
+    let!(:path_to_automation_template) { stub_out(Bwoken, :path_to_automation_template, 'foo') }
+    let!(:env_variables_for_cli) { stub_out(subject, :env_variables_for_cli, 'baz') }
 
+    let(:app_dir) { 'bar' }
+    let(:build) { mock(Bwoken::Build, :app_dir => app_dir) }
+    let(:regexp) do
+      /
+        unix_instruments\.sh\s+
+        #{expected_device_flag_regexp}
+        -D\s#{trace_file_path}\s+
+        -t\s#{path_to_automation_template}\s+
+        #{app_dir}\s+
+        #{env_variables_for_cli}/x
+    end
+
+    before { Bwoken::Build.stub(:new => build) }
+
+    shared_examples 'returns the correct unix_instruments command' do
+      it 'matches the regexp' do
+        subject.cmd.should match regexp
+      end
+    end
+
+    context 'when a device is connected' do
       let(:uuid) { 'abcdef1234567890' }
       before do
         Bwoken::Device.stub(:connected? => true)
         Bwoken::Device.stub(:uuid => uuid)
       end
 
-      it 'returns the unix_instruments command' do
-        path_to_automation_template = stub_out(Bwoken, :path_to_automation_template, 'foo')
-        trace_file_path = stub_out(subject.class, :trace_file_path, 'trace_file_path')
-        app_dir = 'bar'
-        env_variables_for_cli = stub_out(subject, :env_variables_for_cli, 'baz')
-        build = mock(Bwoken::Build, :app_dir => app_dir)
-        Bwoken::Build.stub(:new => build)
+      context 'without overriding from command-line' do
+        let(:expected_device_flag_regexp) { "-w\\s#{uuid}\\s+" }
+        it_behaves_like 'returns the correct unix_instruments command'
+      end
 
-        regexp = /
-          unix_instruments\.sh\s+
-          -w\s#{uuid}\s+
-          -D\s#{trace_file_path}\s+
-          -t\s#{path_to_automation_template}\s+
-          #{app_dir}\s+
-          #{env_variables_for_cli}/x
-
-        subject.cmd.should match regexp
+      context 'when overriding from command-line' do
+        let(:expected_device_flag_regexp) { '' }
+        before { ENV.stub(:[]).with('SIMULATOR').and_return('TRUE') }
+        it_behaves_like 'returns the correct unix_instruments command'
       end
     end
 
     context 'when a device is not connected' do
       before { Bwoken::Device.stub(:connected? => false) }
-      it 'returns the unix_instruments command' do
-        path_to_automation_template = stub_out(Bwoken, :path_to_automation_template, 'foo')
-        trace_file_path = stub_out(subject.class, :trace_file_path, 'trace_file_path')
-        app_dir = 'bar'
-        env_variables_for_cli = stub_out(subject, :env_variables_for_cli, 'baz')
-        build = mock(Bwoken::Build, :app_dir => app_dir)
-        Bwoken::Build.stub(:new => build)
-
-        regexp = /
-          unix_instruments\.sh\s+
-          -D\s#{trace_file_path}\s+
-          -t\s#{path_to_automation_template}\s+
-          #{app_dir}\s+
-          #{env_variables_for_cli}/x
-
-        subject.cmd.should match regexp
-      end
+      let(:expected_device_flag_regexp) { '' }
+      it_behaves_like 'returns the correct unix_instruments command'
     end
   end
 
