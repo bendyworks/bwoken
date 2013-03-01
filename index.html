@@ -33,62 +33,87 @@
 
 <p><iframe src="http://player.vimeo.com/video/41046577" width="600" height="337" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
 
+<a name="usage"></a>
 <h2>Usage</h2>
+
+<h3>Running tests</h3>
+
+<p>Make sure bwoken is <a href="#installation">properly installed</a>. Then, build your project and run all your tests via:</p>
+
+<pre><code># will build and run all of your tests
+$ rake
+
+# will run one file, relative to integration/coffeescript (note: no file extension)
+$ RUN=iphone/focused_test rake
+</code></pre>
 
 <h3>Simulator or Device?</h3>
 
 <p>To run bwoken tests on your device, just plug it in! And if you want to run tests in the simulator, just unplug it!</p>
 
-<h3>Running tests</h3>
+<p>As of bwoken 1.2.0, you can pass <code>SIMULATOR=true</code> as an environment variable to force simulator use even if your device is plugged in:</p>
 
-<p>Make sure bwoken is properly installed via one of the methods below. Then, build your project and run all your tests via:</p>
+<pre><code># without a device connected, will run on the simulator:
+$ rake
 
+# with a device connected, will run on the device:
+$ rake
+
+# with a device connected, will run on the simulator:
+$ SIMULATOR=true rake
+</code></pre>
+
+<p>Your tests will look something like this:
 <pre><code>$ rake
+<span style="color: blue">Building.............................................................................
+.....................................................................................
+.....................................................................................
+.....................................................................................
+.....................................................................................
+.....................................................................................
+.....................................................................................
+................................................................................</span>
+<span style="color: #07BA00">Build Successful!</span>
+
+<span style="color: cyan">iphone</span>  <span style="color: cyan">favorites.js</span>
+<span style="color: cyan">Start:</span>  Favoriting a repository
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> tableViews[<span style="color: #DD00DD">"Repositories"</span>].cells[<span style="color: #DD00DD">"CITravis by Travis-ci"</span>]
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.rightButton
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> actionSheet.elements[<span style="color: #DD00DD">"Add"</span>]
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.leftButton
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.elements[<span style="color: #DD00DD">"Favorites"</span>]
+<span style="color: cyan">Debug:</span>  navigationBar.elements[<span style="color: #DD00DD">"Favorites"</span>].scrollToVisible
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.elements[<span style="color: #DD00DD">"All"</span>]
+<span style="color: #07BA00">Pass: </span>  Favoriting a repository
+<span style="color: cyan">Start:</span>  Unfavoriting a repository
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.elements[<span style="color: #DD00DD">"Favorites"</span>]
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> tableViews[<span style="color: #DD00DD">"Repositories"</span>].cells[<span style="color: #DD00DD">"CITravis by Travis-ci"</span>]
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.rightButton
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> actionSheet.elements[<span style="color: #DD00DD">"Remove"</span>]
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.leftButton
+<span style="color: cyan">Debug:</span>  should be true null
+<span style="color: cyan">Debug:</span>  <span style="color: yellow">tap</span> navigationBar.elements[<span style="color: #DD00DD">"All"</span>]
+<span style="color: #07BA00">Pass: </span>  Unfavoriting a repository
+
+<span style="color: #07BA00">Complete</span>
+ <span style="font-weight: bold; text-decoration: underline">Duration: 23.419741s</span>
 </code></pre>
 
-<p>To run a single file, add a RUN variable relative to <code>integration/coffeescript/</code>, ignoring the file extension:</p>
 
-<pre><code>$ RUN=iphone/focused_test rake
+<h3>Like Javascript?</h3>
+
+<p>Sometimes we'd like to have some javascript help us out. For example, what if you'd like <a href="http://underscorejs.org">Underscore.js</a> in your test suite? Simple! Just put it in <code>integration/javascript</code> and import it in your test:</p>
+
+<pre><code>#import "../underscore.js"
 </code></pre>
 
-<h2>Basic Installation</h2>
 
-<p>N.B.: This is the simplest way to get started and try out bwoken, but the recommended method is with RVM (see below). You can use this method without affecting your ability to later use RVM.</p>
+<a name="installation"></a>
+<h2>Installation</h2>
 
-<p>Ensure Xcode is up-to-date.</p>
+<h3>Create an iOS project</h3>
 
-<p>Install bundler and init:</p>
-
-<pre><code>$ sudo gem install bundler
-$ bundle init
-</code></pre>
-
-<p>Add this line to your application's Gemfile:</p>
-
-<pre><code>gem 'bwoken'
-</code></pre>
-
-<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
-
-<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
-</code></pre>
-
-<p>Restart your terminal.</p>
-
-<p>And then execute:</p>
-
-<pre><code>$ bundle --binstubs=bundler_bin
-</code></pre>
-
-<p>Then, add the following line to your <code>Rakefile</code>:</p>
-
-<pre><code>require 'bwoken/tasks'
-</code></pre>
-
-<p>Initialize your bwoken file structure:</p>
-
-<pre><code>$ rake bwoken:init
-</code></pre>
+<p>If you don't have an iOS project already, go ahead and create it. If you already have a project, no worries: you can install bwoken at any point.</p>
 
 <p>Ensure your project is in a workspace rather than simply a project:</p>
 
@@ -96,59 +121,46 @@ $ bundle init
 <li>In Xcode, select File -&gt; Save as workspace...</li>
 <li>Save the workspace in the same directory as your .xcodeproj file</li>
 </ul>
-<h2>Installation with rvm (recommended)</h2>
+
+<p>Note: This is done automatically if you use <a href="http://cocoapods.org/">CocoaPods</a>. I highly suggest you do!</p>
+
+<h3>Prerequisites</h3>
 
 <p>Ensure Xcode is up-to-date.</p>
 
-<p>Add an .rvmrc file to your project, such as:</p>
+<p>Install rvm via <a href="https://rvm.io/rvm/install/">the instructions</a>. Ensure your after_cd_bundler rvm hook is enabled:</p>
 
-<pre><code>$ echo 'rvm use 1.9.3@MyProject --create' &gt;&gt; .rvmrc
+<pre><code>$ chmod u+x ~/.rvm/hooks/after_cd_bundler
 </code></pre>
 
-<p>Install bundler and init:</p>
+<h3>Installation</h3>
+
+<p>In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create an <code>.rvmrc</code> file and trigger its use:</p>
+
+<pre><code>$ echo 'rvm use 1.9.3@my_project' &gt; .rvmrc
+$ rvm rvmrc trust .rvmrc
+$ . .rvmrc
+</code></pre>
+
+Install bundler (a ruby library dependency manager) and init:</p>
 
 <pre><code>$ gem install bundler
 $ bundle init
 </code></pre>
 
-<p>Add this line to your application's Gemfile:</p>
+<p>This will create a <code>Gemfile</code>. Add bwoken to it and bundle:</p>
 
-<pre><code>gem 'bwoken'
+<pre><code>$ echo "gem 'bwoken'" &gt;&gt; Gemfile
+$ bundle
 </code></pre>
 
-<p>Ensure your $PATH variable has bundler_bin at the front. This is usually done with .bash_profile:</p>
+<p>Then, create a simple <code>Rakefile</code> and initialize your bwoken file structure:</p>
 
-<pre><code>$ echo 'export PATH=bundler_bin:$PATH' &gt;&gt; ~/.bash_profile
+<pre><code>$ echo "require 'bwoken/tasks'" &gt; Rakefile
+$ rake bwoken:init
 </code></pre>
 
-<p>Restart your terminal.</p>
-
-<p>And then execute:</p>
-
-<pre><code>$ bundle --binstubs=bundler_bin
-</code></pre>
-
-<p>Ensure your after_cd_bundler rvm hook is enabled:</p>
-
-<pre><code>$ chmod u+x ~/.rvm/hooks/after_cd_bundler
-</code></pre>
-
-<p>Then, add the following line to your <code>Rakefile</code>:</p>
-
-<pre><code>require 'bwoken/tasks'
-</code></pre>
-
-<p>Initialize your bwoken file structure:</p>
-
-<pre><code>$ rake bwoken:init
-</code></pre>
-
-<p>Ensure your project is in a workspace rather than simply a project:</p>
-
-<ul>
-<li>In Xcode, select File -&gt; Save as workspace...</li>
-<li>Save the workspace in the same directory as your .xcodeproj file</li>
-</ul>
+<p>Now, you can start <a href="#usage">using it!</a></p>
 
 <h2>Contributing</h2>
 
