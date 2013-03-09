@@ -3,6 +3,9 @@ require 'coffee_script/source'
 require 'json'
 require 'execjs'
 
+require File.expand_path('../coffeescript/import_string', __FILE__)
+require File.expand_path('../coffeescript/github_import_string', __FILE__)
+
 module Bwoken
   class Coffeescript
     class << self
@@ -22,15 +25,36 @@ module Bwoken
       end
 
       def precompile coffeescript
-        coffeescript.lines.partition {|line| line =~ /^#import .*$/}.map(&:join)
+        coffeescript.lines.partition {|line| line =~ /^#(?:github|import) .*$/}
       end
 
       def compile source, target
-        import_strings, sans_imports = precompile(IO.read source)
+        githubs_and_imports, sans_imports = precompile(IO.read source)
 
-        javascript = self.context.call 'CoffeeScript.compile', sans_imports, :bare => true
+        javascript = coffeescript_to_javascript sans_imports.join
+        import_strings = githubs_to_imports(githubs_and_imports)
 
         write import_strings, javascript, :to => target
+      end
+
+      def coffeescript_to_javascript coffee
+        self.context.call 'CoffeeScript.compile', coffee, :bare => true
+      end
+
+      def githubs_to_imports strings
+        strings.map do |string|
+          obj = import_string_object(string)
+          obj.parse
+          obj.to_s
+        end.join("\n")
+      end
+
+      def import_string_object string
+        if string =~ /^#github/
+          GithubImportString.new(string)
+        else
+          ImportString.new(string)
+        end
       end
 
       def write *args
