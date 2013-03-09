@@ -73,6 +73,13 @@ Complete
  Duration: 23.419741s
 </code></pre>
 
+### Bring in Libraries!
+
+Wanna bring in [tuneup.js](https://github.com/alexvollmer/tuneup_js) or [mechanic](https://github.com/jaykz52/mechanic)? Just use `#github` instead of `#import`:
+
+<pre><code>#github "alexvollmer/tuneup_js/tuneup.js"
+#github "jaykz52/mechanic/src/mechanic-core.js"
+</code></pre>
 
 ### Like Javascript?
 
