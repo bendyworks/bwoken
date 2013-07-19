@@ -115,9 +115,9 @@ Install rvm via <a href="https://rvm.io/rvm/install/">the instructions</a>. Ensu
 
 In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create an <code>.rvmrc</code> file and trigger its use:
 
-<pre><code>$ echo 'rvm use 1.9.3@my_project' &gt; .rvmrc
-$ rvm rvmrc trust .rvmrc
-$ . .rvmrc
+<pre><code>$ echo '1.9.3' &gt; .ruby-version
+$ echo 'my_project' &gt; .ruby-gemset
+$ cd .
 </code></pre>
 
 Install bundler (a ruby library dependency manager) and init:
