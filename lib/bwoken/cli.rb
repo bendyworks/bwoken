@@ -6,28 +6,6 @@ end
 
 ran_command = nil
 
-init_banner, run_banner = <<-INIT_BANNER, <<-RUN_BANNER
-Initialize your UIAutomation project.
-
-
-== Options ==
-INIT_BANNER
-Run your tests. If you don't specify which tests, bwoken will run them all
-
-    bwoken run --simulator # runs all tests in the simulator
-
-You can specify a device type if you only want to run, say, iPad tests:
-
-    bwoken run --device ipad
-
-If you only want to run a specific test, you can focus on it:
-
-    bwoken run --focus login # runs iPhone and iPad tests named "login"
-
-
-== Options ==
-RUN_BANNER
-
 opts = Slop.parse :help => true do
   on :v, :version, 'Print the version' do
     puts Bwoken::VERSION
@@ -35,13 +13,13 @@ opts = Slop.parse :help => true do
   end
 
   command 'init' do
-    banner init_banner
+    banner Bwoken::CLI::Init.help_banner
 
     run { ran_command = 'init' }
   end
 
   command 'run' do
-    banner run_banner
+    banner Bwoken::CLI::Run.help_banner
 
     on :simulator, 'Use simulator, even when an iDevice is connected'
 
@@ -51,10 +29,21 @@ opts = Slop.parse :help => true do
     on :flags=, 'Specify custom build flags (e.g., --flags="-arch=i386,foo=bar")', :as => Array, :default => []
     on :formatter=, 'Specify a custom formatter (e.g., --formatter=passthru)', :default => 'colorful'
     on :focus=, 'Specify particular tests to run', :as => Array, :default => []
+    on :clean, 'Remove any temporary products'
+    on :clobber, 'Remove any generated file'
 
     run { ran_command = 'run' }
   end
 
+end
+
+if File.exists?('Rakefile')
+  contents = open('Rakefile').read.strip
+  if contents =~ /\Arequire ["']bwoken\/tasks["']\Z/
+    STDERR.puts 'You may safely delete Rakefile'
+  elsif contents =~ /require ["']bwoken\/tasks["']/
+    STDERR.puts %Q|You may safely remove the "require 'bwoken/tasks'" line from Rakefile|
+  end
 end
 
 case ran_command

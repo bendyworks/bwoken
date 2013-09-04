@@ -10,6 +10,8 @@ require 'bwoken/version'
 
 module Bwoken
   class << self
+    DEVICE_FAMILIES = %w(iphone ipad)
+
     def path
       File.join(project_path, 'integration')
     end
