@@ -19,7 +19,7 @@ module Bwoken
 
     def execute
       Simulator.device_family = device_family
-      scripts(device_family).each(&:run)
+      scripts.each(&:run)
     end
 
     def scripts
@@ -36,9 +36,9 @@ module Bwoken
 
     def script_filenames
       if focus.respond_to?(:length) && focus.length > 0
-        test_files_from_feature_names device_family
+        test_files_from_feature_names
       else
-        all_test_files device_family
+        all_test_files
       end
     end
 

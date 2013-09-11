@@ -23,6 +23,7 @@ describe Bwoken::Script do
       subject.path = 'path'
       subject.formatter.should_receive(:before_script_run).with('path')
       Open3.stub(:popen3)
+      subject.stub(:cmd)
       subject.run
     end
 
@@ -35,6 +36,7 @@ describe Bwoken::Script do
     context 'when passing' do
       it 'does not raise a ScriptFailedError' do
         Open3.stub(:popen3).and_yield(*%w(in out err thr))
+        subject.stub(:cmd)
         expect { subject.run }.not_to raise_error
       end
     end
@@ -44,6 +46,7 @@ describe Bwoken::Script do
 
       it 'raises a ScriptFailedError' do
         Open3.stub(:popen3).and_yield(*%w(in out err thr))
+        subject.stub(:cmd)
         expect { subject.run }.to raise_error(Bwoken::ScriptFailedError)
       end
     end
