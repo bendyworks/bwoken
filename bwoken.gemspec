@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'coffee-script-source'
   gem.add_dependency 'colorful'
   gem.add_dependency 'execjs'
-  gem.add_dependency 'json_pure' if RUBY_VERSION =~ /^1\.8\./
+  gem.add_dependency 'json_pure'
   gem.add_dependency 'rake'
   gem.add_dependency 'slop'
 
