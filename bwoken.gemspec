@@ -24,9 +24,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rake'
   gem.add_dependency 'slop'
 
-  gem.add_dependency 'pry'
-  gem.add_dependency 'pry-debugger'
-
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'
 end

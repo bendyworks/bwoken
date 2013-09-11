@@ -3,12 +3,7 @@ require 'rake/clean'
 
 require 'slop'
 require 'bwoken/cli/init'
-require 'bwoken/cli/run'
-
-COFFEESCRIPTS      = FileList['integration/coffeescript/**/*.coffee']
-COMPILED_COFFEE    = COFFEESCRIPTS.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
-JAVASCRIPTS        = FileList['integration/javascript/**/*.js']
-COPIED_JAVASCRIPTS = JAVASCRIPTS.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
+require 'bwoken/cli/test'
 
 BUILD_DIR          = 'build'
 IPHONE_DIR         = 'integration/coffeescript/iphone'
@@ -29,50 +24,30 @@ end
 namespace :bwoken do
   desc 'Create bwoken skeleton folders'
   task :init => :rake_deprecated do
-    Bwoken::CLI::Init.run(Slop.new({}) {})
+    Bwoken::CLI::Init.new({}).run
   end
 end
 
-#COMPILED_COFFEE.zip(COFFEESCRIPTS).each do |target, source|
-  #containing_dir = target.pathmap('%d')
-  #directory containing_dir
-  #file target => [containing_dir, source] do
-    #Bwoken::Coffeescript.compile source, target
-  #end
-#end
-
-#COPIED_JAVASCRIPTS.zip(JAVASCRIPTS).each do |target, source|
-  #containing_dir = target.pathmap('%d')
-  #directory containing_dir
-  #file target => [containing_dir, source] do
-    #sh "cp #{source} #{target}"
-  #end
-#end
-
 desc 'Compile coffeescript to javascript and copy vendor javascript'
 task :coffeescript => :rake_deprecated do
-  Bwoken::CLI::Run.coffeescript # COMPILED_COFFEE + COPIED_JAVASCRIPTS
+  Bwoken::CLI::Test.new({}).transpile
 end
-
-#CLEAN.include('integration/tmp/javascript')
-#CLOBBER.include('integration/tmp')
 
 desc 'remove any temporary products'
 task :clean => :rake_deprecated do
-  Bwoken::CLI::Run.clean
+  Bwoken::CLI::Test.new({}).clean
 end
 
 desc 'remove any generated file'
 task :clobber => :rake_deprecated do
-  Bwoken::CLI::Run.clobber
+  Bwoken::CLI::Test.new({}).clobber
 end
 
 
 desc 'Compile the workspace'
 task :compile => :rake_deprecated do
-  exit_status = Bwoken::CLI::Run.compile
-  #exit_status = Bwoken::Build.new.compile
-  raise unless exit_status == 0
+  opts = {:simulator => Bwoken::Device.should_use_simulator?}
+  Bwoken::CLI::Test.new(opts).compile
 end
 
 
@@ -82,11 +57,13 @@ device_families.each do |device_family|
 
   namespace device_family do
     task :test => [:rake_deprecated, RESULTS_DIR, :coffeescript] do
-      if ENV['RUN']
-        Bwoken::CLI::Run.focus [ENV['RUN']], device_family
-      else
-        Bwoken::CLI::Run.all device_family
-      end
+      opts = {
+        :simulator => Bwoken::Device.should_use_simulator?,
+        :family => device_family
+      }
+      opts[:focus] = [ENV['RUN']] if ENV['RUN']
+
+      Bwoken::CLI::Test.new(opts).test
     end
   end
 

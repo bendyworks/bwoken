@@ -1,13 +1,5 @@
 require 'fileutils'
 
-require 'bwoken/build'
-require 'bwoken/coffeescript'
-require 'bwoken/formatters/colorful_formatter'
-require 'bwoken/script'
-require 'bwoken/simulator'
-require 'bwoken/device'
-require 'bwoken/version'
-
 module Bwoken
   class << self
     DEVICE_FAMILIES = %w(iphone ipad)
@@ -22,10 +14,6 @@ module Bwoken
 
     def app_name
       File.basename(File.basename(workspace_or_project, '.xcodeproj'), '.xcworkspace')
-    end
-
-    def formatter
-      @formatter ||= Bwoken::ColorfulFormatter.new
     end
 
     def project_path

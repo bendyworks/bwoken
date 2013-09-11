@@ -1,50 +1,26 @@
 require 'fileutils'
 require 'open3'
 
-require 'bwoken/build'
+require 'bwoken'
+require 'bwoken/device'
 
 module Bwoken
-
   class ScriptFailedError < RuntimeError; end
 
   class Script
 
+    def self.trace_file_path
+      File.join(Bwoken.tmp_path, 'trace')
+    end
+
     attr_accessor :path
+    attr_accessor :device_family
+    attr_accessor :formatter
+    attr_accessor :simulator
+    attr_accessor :app_dir
 
-    class << self
-
-      def run_all device_family
-        Simulator.device_family = device_family
-
-        test_files(device_family).each do |javascript|
-          run(javascript)
-        end
-      end
-
-      def run_focused feature_names, device_family
-        Simulator.device_family = device_family
-
-        feature_names.each do |feature_name|
-          run File.join(Bwoken.test_suite_path, device_family, "#{feature_name}.js")
-        end
-      end
-
-      def run javascript_path
-        script = new
-        script.path = javascript_path
-        script.run
-      end
-
-      def trace_file_path
-        File.join(Bwoken.tmp_path, 'trace')
-      end
-
-      def test_files device_family
-        all_files_in_test_dir = Dir["#{Bwoken.test_suite_path}/#{device_family}/**/*.js"]
-        helper_files = Dir["#{Bwoken.test_suite_path}/#{device_family}/**/helpers/**/*.js"]
-        all_files_in_test_dir - helper_files
-      end
-
+    def initialize
+      yield self if block_given?
     end
 
     def env_variables
@@ -59,36 +35,25 @@ module Bwoken
     end
 
     def cmd
-      build = Bwoken::Build.new
       "#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh \
         #{device_flag} \
         -D #{self.class.trace_file_path} \
         -t #{Bwoken.path_to_automation_template} \
-        #{build.app_dir} \
+        #{app_dir} \
         #{env_variables_for_cli}"
     end
 
     def device_flag
-      if Bwoken::Device.should_use_simulator?
-        ''
-      else
-        "-w #{Bwoken::Device.uuid}"
-      end
-    end
-
-    def make_results_path_dir
-      FileUtils.mkdir_p Bwoken.results_path
+      simulator ? '' : "-w #{Bwoken::Device.uuid}"
     end
 
     def run
-      Bwoken.formatter.before_script_run path
-      make_results_path_dir
+      formatter.before_script_run path
 
-      exit_status = 0
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
-        exit_status = Bwoken.formatter.format stdout
+        exit_status = formatter.format stdout
+        raise ScriptFailedError.new('Test Script Failed') unless exit_status == 0
       end
-      raise ScriptFailedError.new('Test Script Failed') unless exit_status == 0
     end
 
   end

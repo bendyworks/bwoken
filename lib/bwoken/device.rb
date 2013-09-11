@@ -2,10 +2,12 @@ module Bwoken
   class Device
     class << self
 
+      # deprecated. Remove when Rakefile support removed
       def should_use_simulator?
         want_simulator? || ! connected?
       end
 
+      # deprecated. Remove when Rakefile support removed
       def want_simulator?
         ENV['SIMULATOR'] && ENV['SIMULATOR'].downcase == 'true'
       end

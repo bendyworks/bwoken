@@ -1,6 +1,6 @@
 require 'slop'
 
-%w(version cli/init cli/run).each do |f|
+%w(version cli/init cli/test).each do |f|
   require File.expand_path("../#{f}", __FILE__)
 end
 
@@ -18,21 +18,23 @@ opts = Slop.parse :help => true do
     run { ran_command = 'init' }
   end
 
-  command 'run' do
-    banner Bwoken::CLI::Run.help_banner
+  command 'test' do
+    banner Bwoken::CLI::Test.help_banner
 
-    on :simulator, 'Use simulator, even when an iDevice is connected'
+    on :simulator, 'Use simulator, even when an iDevice is connected', :default => false
 
-    on :device=, 'Run only one device type, either ipad or iphone. Default is to run on both',
-      :match => /\A(?:ipad|iphone)\Z/i
+    on :family=, 'Test only one device type, either ipad or iphone. Default is to test on both',
+      :match => /\A(?:ipad|iphone|all)\Z/i, :default => 'all'
     on :scheme=, 'Specify a custom scheme'
-    on :flags=, 'Specify custom build flags (e.g., --flags="-arch=i386,foo=bar")', :as => Array, :default => []
+    #on :flags=, 'Specify custom build flags (e.g., --flags="-arch=i386,foo=bar")', :as => Array, :default => [] # TODO: implement
     on :formatter=, 'Specify a custom formatter (e.g., --formatter=passthru)', :default => 'colorful'
     on :focus=, 'Specify particular tests to run', :as => Array, :default => []
     on :clean, 'Remove any temporary products'
     on :clobber, 'Remove any generated file'
+    on :'skip-build', 'Do not build the iOS binary'
+    on :verbose, 'Be verbose'
 
-    run { ran_command = 'run' }
+    run { ran_command = 'test' }
   end
 
 end
@@ -47,7 +49,7 @@ if File.exists?('Rakefile')
 end
 
 case ran_command
-when 'init' then Bwoken::CLI::Init.run(opts.commands['init'])
-when 'run' then Bwoken::CLI::Run.run(opts.commands['run'])
+when 'init' then Bwoken::CLI::Init.new(opts.commands['init']).run
+when 'test' then Bwoken::CLI::Test.new(opts.commands['test']).run
 else puts opts
 end
