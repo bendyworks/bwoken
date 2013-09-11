@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 require 'bwoken/script_runner'
-require 'bwoken/device_runner'
+require 'bwoken/simulator_runner'
 
 describe Bwoken::ScriptRunner do
 
-  describe '#execute' do
+  describe '#execute_in_simulator' do
     it 'executes for each family' do
       subject.stub(:chosen_families).and_return(%w(a b))
       subject.should_receive(:execute_for_family).with('a').ordered
       subject.should_receive(:execute_for_family).with('b').ordered
-      subject.execute
+      subject.execute_in_simulator
     end
   end
 

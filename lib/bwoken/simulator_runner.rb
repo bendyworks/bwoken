@@ -1,11 +1,14 @@
 require 'bwoken'
 require 'bwoken/script'
+require 'bwoken/simulator'
 
 module Bwoken
-  class DeviceRunner
+  class SimulatorRunner
     attr_accessor :focus
     attr_accessor :formatter
+    attr_accessor :simulator
     attr_accessor :app_dir
+    attr_accessor :device_family
 
     alias_method :feature_names, :focus
 
@@ -14,11 +17,8 @@ module Bwoken
     end
 
     def execute
+      Simulator.device_family = device_family
       scripts.each(&:run)
-    end
-
-    def device_family
-      Device.device_type
     end
 
     def scripts
@@ -27,6 +27,7 @@ module Bwoken
           s.path = filename
           s.device_family = device_family
           s.formatter = formatter
+          s.simulator = simulator
           s.app_dir = app_dir
         end
       end

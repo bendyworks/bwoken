@@ -3,3 +3,4 @@
 * fix non-standard name for Info.plist?
 * set "-arch i386"
 * add #github to javascript files
+* handle when user hasn't yet installed the app on a device. error message is "unable to locate CFBundleIdentifier for path...". Watch for this, then alert the user

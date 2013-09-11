@@ -17,8 +17,15 @@ module Bwoken
       end
 
       def uuid
-        ioreg = `ioreg -w 0 -rc IOUSBDevice -k SupportsIPhoneOS`
         ioreg[/"USB Serial Number" = "([0-9a-z]+)"/] && $1
+      end
+
+      def device_type
+        ioreg[/"USB Product Name" = "(.*)"/] && $1.downcase
+      end
+
+      def ioreg
+        @ioreg ||= `ioreg -w 0 -rc IOUSBDevice -k SupportsIPhoneOS`
       end
 
     end

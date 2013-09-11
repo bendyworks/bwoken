@@ -1,3 +1,4 @@
+require 'bwoken/simulator_runner'
 require 'bwoken/device_runner'
 
 module Bwoken
@@ -15,6 +16,14 @@ module Bwoken
     end
 
     def execute
+      if simulator
+        execute_in_simulator
+      else
+        execute_on_device
+      end
+    end
+
+    def execute_in_simulator
       chosen_families.each do |device_family|
         execute_for_family device_family
       end
@@ -25,12 +34,12 @@ module Bwoken
     end
 
     def runner_for_family device_family
-      DeviceRunner.new do |dr|
-        dr.family = device_family
-        dr.focus = focus
-        dr.formatter = formatter
-        dr.simulator = simulator
-        dr.app_dir = app_dir
+      SimulatorRunner.new do |sr|
+        sr.device_family = device_family
+        sr.focus = focus
+        sr.formatter = formatter
+        sr.simulator = simulator
+        sr.app_dir = app_dir
       end
     end
 
@@ -39,6 +48,18 @@ module Bwoken
         %w(iphone ipad)
       else
         Array(family)
+      end
+    end
+
+    def execute_on_device
+      runner_for_device.execute
+    end
+
+    def runner_for_device
+      DeviceRunner.new do |dr|
+        dr.focus = focus
+        dr.formatter = formatter
+        dr.app_dir = app_dir
       end
     end
 

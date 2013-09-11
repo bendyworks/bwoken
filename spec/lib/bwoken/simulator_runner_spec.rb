@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'bwoken/device_runner'
+require 'bwoken/simulator_runner'
 
-describe Bwoken::DeviceRunner do
+describe Bwoken::SimulatorRunner do
 
   describe '#script_filenames' do
     shared_examples 'for not focused' do

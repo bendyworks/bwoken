@@ -74,13 +74,13 @@ end
 
 desc 'Run all tests without compiling first'
 task :test => :rake_deprecated do
-  if ENV['FAMILY']
-    Rake::Task[ENV['FAMILY']].invoke
-  else
-    device_families.each do |device_family|
-      Rake::Task[device_family].invoke
-    end
-  end
+  opts = {
+    :simulator => Bwoken::Device.should_use_simulator?
+  }
+  opts[:focus] = [ENV['RUN']] if ENV['RUN']
+  opts[:family] = ENV['FAMILY'] if ENV['FAMILY']
+
+  Bwoken::CLI::Test.new(opts).test
 end
 
 task :default => [:rake_deprecated, :compile, :test]
