@@ -29,7 +29,6 @@ opts = Slop.parse :help => true do
     #on :flags=, 'Specify custom build flags (e.g., --flags="-arch=i386,foo=bar")', :as => Array, :default => [] # TODO: implement
     on :formatter=, 'Specify a custom formatter (e.g., --formatter=passthru)', :default => 'colorful'
     on :focus=, 'Specify particular tests to run', :as => Array, :default => []
-    on :clean, 'Remove any temporary products'
     on :clobber, 'Remove any generated file'
     on :'skip-build', 'Do not build the iOS binary'
     on :verbose, 'Be verbose'
