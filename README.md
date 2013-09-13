@@ -143,7 +143,7 @@ $ cd .
 
 Install bundler (a ruby library dependency manager) and init:
 
-<pre><code>$ gem install bundler # might already be installed
+<pre><code>$ gem install bundler # idempotent; might already be installed and that's ok
 $ bundle init
 </code></pre>
 
