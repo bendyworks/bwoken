@@ -31,40 +31,40 @@
 
 <p><img src="https://secure.travis-ci.org/bendyworks/bwoken.png?branch=master" alt="build status"></p>
 
-<p><iframe src="http://player.vimeo.com/video/41046577" width="600" height="337" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
+<p><strong>NOTE:</strong> This video uses the <code>rake</code>-invoked version of bwoken. This is deprecated, and this video will be updated soon. <iframe src="http://player.vimeo.com/video/41046577" width="600" height="337" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
 
 <a name="usage"></a>
-<h2>Usage</h2>
+<h2>On the Command Line</h2>
 
 <h3>Running tests</h3>
 
 <p>Make sure bwoken is <a href="#installation">properly installed</a>. Then, build your project and run all your tests via:</p>
 
 <pre><code># will build and run all of your tests
-$ rake
+$ bwoken test
 
-# will run one file, relative to integration/coffeescript (note: no file extension)
-$ RUN=iphone/focused_test rake
+# will run one file, relative to integration/coffeescript/{iphone,ipad}/
+#   (note: no file extension)
+$ bwoken test --focus some_test # runs this test on (iphone and ipad) OR (connected iDevice)
+$ bwoken test --focus some_test --family iphone
 </code></pre>
 
 <h3>Simulator or Device?</h3>
 
 <p>To run bwoken tests on your device, just plug it in! And if you want to run tests in the simulator, just unplug it!</p>
 
-<p>As of bwoken 1.2.0, you can pass <code>SIMULATOR=true</code> as an environment variable to force simulator use even if your device is plugged in:</p>
-
 <pre><code># without a device connected, will run on the simulator:
-$ rake
+$ bwoken test
 
 # with a device connected, will run on the device:
-$ rake
+$ bwoken test
 
 # with a device connected, will run on the simulator:
-$ SIMULATOR=true rake
+$ bwoken test --simulator
 </code></pre>
 
 <p>Your tests will look something like this:
-<pre><code>$ rake
+<pre><code>$ bwoken test
 <span style="color: blue">Building.............................................................................
 .....................................................................................
 .....................................................................................
@@ -99,6 +99,25 @@ $ SIMULATOR=true rake
  <span style="font-weight: bold; text-decoration: underline">Duration: 23.419741s</span>
 </code></pre>
 
+<h3>All the switches</h3>
+
+<p>Here's a list of all the switches that bwoken takes for the <code>test</code> command:</p>
+
+<pre><code>
+$ bwoken test -h
+[...]
+        --simulator       Use simulator, even when an iDevice is connected
+        --family          Test only one device type, either ipad or iphone. Default is to test on both
+        --scheme          Specify a custom scheme
+        --formatter       Specify a custom formatter (e.g., --formatter=passthru)
+        --focus           Specify particular tests to run
+        --clobber         Remove any generated file
+        --skip-build      Do not build the iOS binary
+        --verbose         Be verbose
+    -h, --help            Display this help message.
+</code></pre>
+
+<h2>In Your Code</h2>
 
 <h3>Like Javascript?</h3>
 
@@ -110,9 +129,10 @@ $ SIMULATOR=true rake
 <a name="import-github"></a>
 <h3>Bring in Libraries!</h3>
 
-<p>Wanna bring in <a href="https://github.com/alexvollmer/tuneup_js">tuneup.js</a> or <a href="https://github.com/jaykz52/mechanic">mechanic</a>? Just use <code>#github</code> instead of <code>#import</code>:</p>
+<p>Wanna bring in <a href="https://github.com/alexvollmer/tuneup_js">tuneup.js</a>, <a href="https://github.com/jaykz52/mechanic">mechanic</a>, or <a href="http://underscorejs.org">underscore</a> without manually downloading them first? Just use <code>#github</code> instead of <code>#import</code>:</p>
 
-<pre><code>#github "alexvollmer/tuneup_js/tuneup.js"
+<pre><code>#github "jashkenas/underscore/underscore.js"
+#github "alexvollmer/tuneup_js/tuneup.js"
 #github "jaykz52/mechanic/src/mechanic-core.js"
 </code></pre>
 
@@ -142,18 +162,18 @@ $ SIMULATOR=true rake
 <pre><code>$ chmod u+x ~/.rvm/hooks/after_cd_bundler
 </code></pre>
 
-<h3>Installation</h3>
+<h3>Install</h3>
 
 <p>In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create an <code>.rvmrc</code> file and trigger its use:</p>
 
-<pre><code>$ echo '1.9.3' &gt; .ruby-version
+<pre><code>$ echo '2.0.0' &gt; .ruby-version
 $ echo 'my_project' &gt; .ruby-gemset
 $ cd .
 </code></pre>
 
 Install bundler (a ruby library dependency manager) and init:</p>
 
-<pre><code>$ gem install bundler
+<pre><code>$ gem install bundler # idempotent; might already be installed and that's ok
 $ bundle init
 </code></pre>
 
@@ -163,13 +183,17 @@ $ bundle init
 $ bundle
 </code></pre>
 
-<p>Then, create a simple <code>Rakefile</code> and initialize your bwoken file structure:</p>
+<p>The last installation step is to initialize the bwoken file structure:</p>
 
-<pre><code>$ echo "require 'bwoken/tasks'" &gt; Rakefile
-$ rake bwoken:init
+<pre><code>$ bwoken init
 </code></pre>
 
 <p>Now, you can start <a href="#usage">using it!</a></p>
+
+<h4>The Dirty Little Installation Method</h4>
+
+<p>Technically, you can skip this entire Installation section and just run <code>sudo gem install bwoken &amp;&amp; bwoken init</code>. This is listed here for completeness, but you really shouldn't install gems this way.</p>
+
 
 <h2>Contributing</h2>
 
