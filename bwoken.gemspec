@@ -15,13 +15,14 @@ Gem::Specification.new do |gem|
   gem.require_path = 'lib'
 
   gem.bindir        = 'bin'
-  gem.executables   = ['unix_instruments.sh']
+  gem.executables   = ['unix_instruments.sh', 'bwoken']
 
   gem.add_dependency 'coffee-script-source'
   gem.add_dependency 'colorful'
   gem.add_dependency 'execjs'
-  gem.add_dependency 'json_pure' if RUBY_VERSION =~ /^1\.8\./
+  gem.add_dependency 'json_pure'
   gem.add_dependency 'rake'
+  gem.add_dependency 'slop'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'
