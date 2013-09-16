@@ -3,7 +3,7 @@ require File.expand_path('../lib/bwoken/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name          = 'bwoken'
-  gem.version       = '2.0.0.beta.2' # Bwoken::VERSION
+  gem.version       = Bwoken::VERSION
   gem.description   = %q{iOS UIAutomation Test Runner}
   gem.summary       = %q{Runs your UIAutomation tests from the command line for both iPhone and iPad; supports coffeescript}
 
