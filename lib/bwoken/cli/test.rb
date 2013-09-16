@@ -17,7 +17,7 @@ module Bwoken
     class Test
 
       def self.help_banner
-        <<BANNER
+        <<-BANNER
 Run your tests. If you don't specify which tests, bwoken will run them all
 
   bwoken test --simulator # runs all tests in the simulator
@@ -47,6 +47,8 @@ BANNER
       #       :simulator  - should force simulator use (default: nil)
       #       :skip-build - do not build the iOS binary
       #       :verbose    - be verbose
+      #       :integration-path - the base directory for all the integration files
+      #       :product-name - the name of the generated .app file if it is different from the name of the project/workspace
       def initialize opts
         opts = opts.to_hash if opts.is_a?(Slop)
         self.options = opts.to_hash.tap do |o|
@@ -55,6 +57,8 @@ BANNER
           o[:simulator] = use_simulator?(o[:simulator])
           o[:family] = o[:family]
         end
+
+        Bwoken.integration_path = options[:'integration-path']
       end
 
       def run
@@ -75,10 +79,11 @@ BANNER
       end
 
       def transpile
-        coffeescripts      = Rake::FileList['integration/coffeescript/**/*.coffee']
-        compiled_coffee    = coffeescripts.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
-        javascripts        = Rake::FileList['integration/javascript/**/*.js']
-        copied_javascripts = javascripts.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
+        integration_dir = options[:'integration-path']
+        coffeescripts      = Rake::FileList["#{integration_dir}/coffeescript/**/*.coffee"]
+        compiled_coffee    = coffeescripts.pathmap("%{^#{integration_dir}/coffeescript,#{integration_dir}/tmp/javascript}d/%n.js")
+        javascripts        = Rake::FileList["#{integration_dir}/javascript/**/*.js"]
+        copied_javascripts = javascripts.pathmap("%{^#{integration_dir}/javascript,#{integration_dir}/tmp/javascript}d/%f")
 
         compiled_coffee.zip(coffeescripts).each do |target, source|
           containing_dir = target.pathmap('%d')
@@ -94,6 +99,8 @@ BANNER
       end
 
       def test
+        Bwoken.app_name = options[:'product-name']
+
         ScriptRunner.new do |s|
           s.app_dir = Build.app_dir(options[:simulator])
           s.family = options[:family]

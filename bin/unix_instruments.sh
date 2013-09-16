@@ -47,7 +47,7 @@ run_instruments() {
   # to make this cleaner?
 
   output=$(mktemp -t unix-instruments)
-  instruments $@ &> /dev/ttyvf & pid_instruments=$!
+  instruments "$@" &> /dev/ttyvf & pid_instruments=$!
 
   # Cat the instruments output to tee which outputs to stdout and saves to
   # $output at the same time
@@ -87,5 +87,5 @@ function cleanup_instruments() {
 if [[ $1 == "----test" ]]; then
   get_error_status
 else
-  run_instruments $@
+  run_instruments "$@"
 fi

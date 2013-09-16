@@ -8,7 +8,7 @@ module Bwoken
       class << self
 
         def help_banner
-          <<BANNER
+          <<-BANNER
 Initialize your UIAutomation project.
 
 
@@ -17,20 +17,24 @@ BANNER
         end
       end
 
+      attr_accessor :options
+
       # opts - A slop command object (acts like super-hash)
       #        There are currently no options available
       def initialize opts
-        # opts = opts.to_hash if opts.is_a?(Slop)
+        opts = opts.to_hash if opts.is_a?(Slop)
+        self.options = opts.to_hash
       end
 
       def run
-        directory 'integration/coffeescript/iphone'
-        directory 'integration/coffeescript/ipad'
-        directory 'integration/javascript'
-        directory 'integration/tmp/results'
-        template 'integration/coffeescript/iphone/example.coffee'
-        template 'integration/coffeescript/ipad/example.coffee'
-        template 'integration/javascript/example_vendor.js'
+        integration_dir = options[:'integration-path']
+        directory "#{integration_dir}/coffeescript/iphone"
+        directory "#{integration_dir}/coffeescript/ipad"
+        directory "#{integration_dir}/javascript"
+        directory "#{integration_dir}/tmp/results"
+        template "#{integration_dir}/coffeescript/iphone/example.coffee"
+        template "#{integration_dir}/coffeescript/ipad/example.coffee"
+        template "#{integration_dir}/javascript/example_vendor.js"
       end
 
       def directory dirname

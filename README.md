@@ -103,15 +103,17 @@ Here's a list of all the switches that bwoken takes for the `test` command:
 <pre><code>
 $ bwoken test -h
 [...]
-        --simulator       Use simulator, even when an iDevice is connected
-        --family          Test only one device type, either ipad or iphone. Default is to test on both
-        --scheme          Specify a custom scheme
-        --formatter       Specify a custom formatter (e.g., --formatter=passthru)
-        --focus           Specify particular tests to run
-        --clobber         Remove any generated file
-        --skip-build      Do not build the iOS binary
-        --verbose         Be verbose
-    -h, --help            Display this help message.
+        --simulator             Use simulator, even when an iDevice is connected
+        --family                Test only one device type, either ipad or iphone. Default is to test on both
+        --scheme                Specify a custom scheme
+        --product-name          Specify a custom product name (e.g. --product-name="My Product"). Default is the name of of the xcodeproj file
+        --integration-path      Specify a custom directory to store your test scripts in (e.g. --integration-path=uiautomation/path/dir). Note that this folder still expects the same directory structure as the one create by `bwoken init`.
+        --formatter             Specify a custom formatter (e.g., --formatter=passthru)
+        --focus                 Specify particular tests to run
+        --clobber               Remove any generated file
+        --skip-build            Do not build the iOS binary
+        --verbose               Be verbose
+    -h, --help                  Display this help message.
 </code></pre>
 
 ## In Your Code
