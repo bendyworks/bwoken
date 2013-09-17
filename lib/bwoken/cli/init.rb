@@ -42,8 +42,9 @@ BANNER
       end
 
       def template filename
+        fixed_filename = "integration" + filename[options[:'integration-path'].length..-1]
         FileUtils.cp \
-          File.expand_path("../templates/#{filename}", __FILE__),
+          File.expand_path("../templates/#{fixed_filename}", __FILE__),
           filename
       end
 
