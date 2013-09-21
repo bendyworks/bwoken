@@ -149,7 +149,7 @@ $ bundle init
 
 This will create a <code>Gemfile</code>. Add bwoken to it and bundle:
 
-<pre><code>$ echo "gem 'bwoken'" &gt;&gt; Gemfile
+<pre><code>$ echo "gem 'bwoken', '2.0.0.beta.1'" &gt;&gt; Gemfile
 $ bundle
 </code></pre>
 
