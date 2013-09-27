@@ -35,6 +35,7 @@ opts = Slop.parse :help => true do
     on :clobber, 'Remove any generated file'
     on :'skip-build', 'Do not build the iOS binary'
     on :verbose, 'Be verbose'
+    on :configuration=, 'The build configruation to use (e.g., --configuration=Release)', :default => 'Debug'
 
     run { ran_command = 'test' }
   end

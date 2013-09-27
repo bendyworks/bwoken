@@ -75,6 +75,7 @@ BANNER
           b.formatter = options[:formatter]
           b.scheme = options[:scheme] if options[:scheme]
           b.simulator = options[:simulator]
+          b.configuration = options[:configuration]
         end.compile
       end
 
