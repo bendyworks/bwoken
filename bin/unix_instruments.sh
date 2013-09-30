@@ -47,11 +47,11 @@ run_instruments() {
   # to make this cleaner?
 
   output=$(mktemp -t unix-instruments)
-  instruments "$@" &> /dev/ttyvf & pid_instruments=$!
+  instruments "$@" &> /dev/ttyuf & pid_instruments=$!
 
   # Cat the instruments output to tee which outputs to stdout and saves to
   # $output at the same time
-  cat < /dev/ptyvf | tee $output
+  cat < /dev/ptyuf | tee $output
 
   # Clear the process id we saved when forking instruments so the cleanup
   # function called on exit knows it doesn't have to kill anything
