@@ -22,6 +22,27 @@ $ bwoken test --focus some_test # runs this test on (iphone and ipad) OR (connec
 $ bwoken test --focus some_test --family iphone
 </code></pre>
 
+### structuring your test files
+To add new coffeescript test, add those file to the /integration/coffeescript/iphone or /integration/coffeescript/ipad folder.
+To add new javascript test, if the iphone and ipad folder don't exist in the /integration/javascript forlder, create them. 
+Then copy your test file inside those folder depending on your target.
+Your file hierarchy should look something like this
+| integration
+	| coffeescript
+		| iphone
+			| exemple.coffee
+		| ipad
+			| example.coffee
+	| javascript
+		| iphone
+			| myTest.js
+		| ipad
+			| myiPadtest.js
+	|tmp
+
+Note that your test scripts inside the coffeescript and javascript folder will be copied to their equivalent folder in the /tmp folder(ie: /tmp/javascript/iphone/myTest.js), 
+so all your import statement should be relative to that location (ie: #import "../filetoImport.js" for file in the javascript folder)
+
 ### Simulator or Device?
 
 To run bwoken tests on your device, just plug it in! And if you want to run tests in the simulator, just unplug it!
