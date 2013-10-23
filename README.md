@@ -27,6 +27,7 @@ To add new coffeescript test, add those file to the /integration/coffeescript/ip
 To add new javascript test, if the iphone and ipad folder don't exist in the /integration/javascript forlder, create them. 
 Then copy your test file inside those folder depending on your target.
 Your file hierarchy should look something like this
+<pre><code>
 | integration
 	| coffeescript
 		| iphone
@@ -39,6 +40,7 @@ Your file hierarchy should look something like this
 		| ipad
 			| myiPadtest.js
 	|tmp
+</code></pre>
 
 Note that your test scripts inside the coffeescript and javascript folder will be copied to their equivalent folder in the /tmp folder(ie: /tmp/javascript/iphone/myTest.js), 
 so all your import statement should be relative to that location (ie: #import "../filetoImport.js" for file in the javascript folder)
