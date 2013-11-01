@@ -18,14 +18,14 @@ describe Bwoken::Simulator do
 
     context 'when deleting the device family array' do
       it 'calls PlistBuddy with the correct args' do
-        Kernel.should_receive(:system).with("plistbuddy -c 'Delete :UIDeviceFamily' plist_file")
+        Kernel.should_receive(:system).with("plistbuddy -c 'Delete :UIDeviceFamily' \"plist_file\"")
         Bwoken::Simulator.update_device_family_in_plist :delete_array
       end
     end
 
     context 'when creating the device family array' do
       it 'calls PlistBuddy with the correct args' do
-        Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily array' plist_file")
+        Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily array' \"plist_file\"")
         Bwoken::Simulator.update_device_family_in_plist :add_array
       end
     end
@@ -33,22 +33,22 @@ describe Bwoken::Simulator do
     context 'when adding to the device family array' do
       context 'for iPhone' do
         it 'calls PlistBuddy with the correct args' do
-          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 1' plist_file")
+          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 1' \"plist_file\"")
           Bwoken::Simulator.update_device_family_in_plist :add_scalar, 'iphone'
         end
       end
 
       context 'for iPad' do
         it 'calls PlistBuddy with the correct args' do
-          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 2' plist_file")
+          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 2' \"plist_file\"")
           Bwoken::Simulator.update_device_family_in_plist :add_scalar, 'ipad'
         end
       end
 
       context 'for universal' do
         it 'calls PlistBuddy with the correct args' do
-          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 1' plist_file")
-          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 2' plist_file")
+          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 1' \"plist_file\"")
+          Kernel.should_receive(:system).with("plistbuddy -c 'Add :UIDeviceFamily:0 integer 2' \"plist_file\"")
           Bwoken::Simulator.update_device_family_in_plist :add_scalar, 'universal'
         end
       end

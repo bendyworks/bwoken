@@ -8,7 +8,7 @@ module Bwoken
       class << self
 
         def help_banner
-          <<-BANNER
+          <<BANNER
 Initialize your UIAutomation project.
 
 
@@ -17,35 +17,32 @@ BANNER
         end
       end
 
-      attr_accessor :options
-
       # opts - A slop command object (acts like super-hash)
-      #        There are currently no options available
+      #        Only allowed option is 'integration-path' which should
+      #        have defaulted to 'integration'
       def initialize opts
         opts = opts.to_hash if opts.is_a?(Slop)
-        self.options = opts.to_hash
+        Bwoken.integration_path = opts[:'integration-path']
       end
 
       def run
-        integration_dir = options[:'integration-path']
-        directory "#{integration_dir}/coffeescript/iphone"
-        directory "#{integration_dir}/coffeescript/ipad"
-        directory "#{integration_dir}/javascript"
-        directory "#{integration_dir}/tmp/results"
-        template "#{integration_dir}/coffeescript/iphone/example.coffee"
-        template "#{integration_dir}/coffeescript/ipad/example.coffee"
-        template "#{integration_dir}/javascript/example_vendor.js"
+        directory "coffeescript/iphone"
+        directory "coffeescript/ipad"
+        directory "javascript"
+        directory "tmp/results"
+        template "coffeescript/iphone/example.coffee"
+        template "coffeescript/ipad/example.coffee"
+        template "javascript/example_vendor.js"
       end
 
       def directory dirname
-        FileUtils.mkdir_p dirname
+        FileUtils.mkdir_p "#{Bwoken.integration_path}/#{dirname}"
       end
 
       def template filename
-        fixed_filename = "integration" + filename[options[:'integration-path'].length..-1]
-        FileUtils.cp \
-          File.expand_path("../templates/#{fixed_filename}", __FILE__),
-          filename
+        source = File.expand_path("../templates/#{filename}", __FILE__)
+        destination = "#{Bwoken.integration_path}/#{filename}"
+        FileUtils.cp source, destination
       end
 
     end

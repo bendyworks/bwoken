@@ -38,17 +38,18 @@ BANNER
       attr_accessor :options
 
       # opts - A slop command object (acts like super-hash)
-      #       :clobber    - remove all generated files, including iOS build
-      #       :family     - enum of [nil, 'iphone', 'ipad'] (case-insensitive)
-      #       :flags      - custom build flag array (default: []) TODO: not yet implmented
-      #       :focus      - which tests to run (default: [], meaning "all")
-      #       :formatter  - custom formatter (default: 'colorful')
-      #       :scheme     - custom scheme (default: nil)
-      #       :simulator  - should force simulator use (default: nil)
-      #       :skip-build - do not build the iOS binary
-      #       :verbose    - be verbose
+      #       :clobber          - remove all generated files, including iOS build
+      #       :family           - enum of [nil, 'iphone', 'ipad'] (case-insensitive)
+      #       :flags            - custom build flag array (default: []) TODO: not yet implmented
+      #       :focus            - which tests to run (default: [], meaning "all")
+      #       :formatter        - custom formatter (default: 'colorful')
+      #       :scheme           - custom scheme (default: nil)
+      #       :simulator        - should force simulator use (default: nil)
+      #       :skip-build       - do not build the iOS binary
+      #       :verbose          - be verbose
       #       :integration-path - the base directory for all the integration files
-      #       :product-name - the name of the generated .app file if it is different from the name of the project/workspace
+      #       :product-name     - the name of the generated .app file if it is different from the name of the project/workspace
+      #       :configuration    - typically "Debug" or "Release"
       def initialize opts
         opts = opts.to_hash if opts.is_a?(Slop)
         self.options = opts.to_hash.tap do |o|
@@ -59,6 +60,7 @@ BANNER
         end
 
         Bwoken.integration_path = options[:'integration-path']
+        Bwoken.app_name = options[:'product-name']
       end
 
       def run
@@ -80,7 +82,7 @@ BANNER
       end
 
       def transpile
-        integration_dir = options[:'integration-path']
+        integration_dir = Bwoken.integration_path
         coffeescripts      = Rake::FileList["#{integration_dir}/coffeescript/**/*.coffee"]
         compiled_coffee    = coffeescripts.pathmap("%{^#{integration_dir}/coffeescript,#{integration_dir}/tmp/javascript}d/%n.js")
         javascripts        = Rake::FileList["#{integration_dir}/javascript/**/*.js"]
@@ -100,8 +102,6 @@ BANNER
       end
 
       def test
-        Bwoken.app_name = options[:'product-name']
-
         ScriptRunner.new do |s|
           s.app_dir = Build.app_dir(options[:simulator])
           s.family = options[:family]

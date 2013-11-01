@@ -14,8 +14,8 @@ opts = Slop.parse :help => true do
 
   command 'init' do
     banner Bwoken::CLI::Init.help_banner
-    on :'integration-path=', 'Specify a custom directory to store your test scripts in (e.g. --integration-path=uiautomation/path/dir). Default: integration. If you use the non-default value here, you will need to always run bwoken with the `--integration-path=your/integration/dir` option.', :efault => 'integration'
-    
+    on :'integration-path=', 'Specify a custom directory to store your test scripts in (e.g. --integration-path=uiautomation/path/dir). Default: integration. If you use the non-default value here, you will need to always run bwoken with the `--integration-path=your/integration/dir` option.', :default => 'integration'
+
     run { ran_command = 'init' }
   end
 
@@ -27,7 +27,7 @@ opts = Slop.parse :help => true do
     on :family=, 'Test only one device type, either ipad or iphone. Default is to test on both',
       :match => /\A(?:ipad|iphone|all)\Z/i, :default => 'all'
     on :scheme=, 'Specify a custom scheme'
-    on :'product-name=', 'Specify a custom product name (e.g. --product-name="My Product"). Default is the name of of the xcodeproj file', :default => ''
+    on :'product-name=', 'Specify a custom product name (e.g. --product-name="My Product"). Default is the name of of the xcodeproj file'
     on :'integration-path=', 'Specify a custom directory to store your test scripts in (e.g. --integration-path=uiautomation/path/dir). Note that this folder still expects the same directory structure as the one create by `bwoken init`.', :default => 'integration'
     #on :flags=, 'Specify custom build flags (e.g., --flags="-arch=i386,foo=bar")', :as => Array, :default => [] # TODO: implement
     on :formatter=, 'Specify a custom formatter (e.g., --formatter=passthru)', :default => 'colorful'
