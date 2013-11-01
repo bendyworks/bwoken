@@ -10,6 +10,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ['Brad Grzesiak']
   gem.email         = ['brad@bendyworks.com']
   gem.homepage      = 'https://bendyworks.github.com/bwoken'
+  gem.license       = 'MIT'
 
   gem.files        = Dir['LICENSE', 'README.md', 'bin/**/*', 'lib/**/*']
   gem.require_path = 'lib'
