@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.description   = %q{iOS UIAutomation Test Runner}
   gem.summary       = %q{Runs your UIAutomation tests from the command line for both iPhone and iPad; supports coffeescript}
 
-  gem.authors       = ['Brad Grzesiak', 'Jaymes Waters', 'Alec Gorge']
-  gem.email         = ['brad@bendyworks.com', 'jaymes@bendyworks.com', 'alecgorge@gmail.com']
+  gem.authors       = ['Brad Grzesiak']
+  gem.email         = ['brad@bendyworks.com']
   gem.homepage      = 'https://bendyworks.github.com/bwoken'
 
   gem.files        = Dir['LICENSE', 'README.md', 'bin/**/*', 'lib/**/*']

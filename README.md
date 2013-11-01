@@ -189,6 +189,19 @@ Now, you can start <a href="#usage">using it!</a>
 
 Technically, you can skip this entire Installation section and just run `sudo gem install bwoken && bwoken init`. This is listed here for completeness, but you really shouldn't install gems this way.
 
+## Contributors
+
+Special thank you goes out to everyone who's helped with bwoken. Here's a (probably incomplete) list of those folks:
+
+* Brad Grzesiak ([listrophy](https://github.com/listrophy))
+* Jaymes Waters ([jaym3s](https://github.com/jaym3s))
+* Jonathan Penn ([jonathanpenn](https://github.com/jonathanpenn))
+* Ryland Herrick ([rylnd](https://github.com/rylnd))
+* Whitney Young ([wbyoung](https://github.com/wbyoung))
+* David Gagnon ([mrdavidgagnon](https://github.com/mrdavidgagnon))
+* [otusweb](https://github.com/otusweb)
+* Alec Gorge ([alecgorge](https://github.com/alecgorge))
+
 ## Contributing
 
 1. Fork it
