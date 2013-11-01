@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2012 Jonathan Penn (http://cocoamanifest.net)
+# Copyright (c) 2013 Jonathan Penn (http://cocoamanifest.net)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,8 @@ run_instruments() {
   # to make this cleaner?
 
   output=$(mktemp -t unix-instruments)
-  instruments $@ &> /dev/ttyvf & pid_instruments=$!
+  instruments "$@" &> /dev/ttyvf &
+  pid_instruments=$!
 
   # Cat the instruments output to tee which outputs to stdout and saves to
   # $output at the same time
@@ -72,7 +73,7 @@ get_error_status() {
 }
 
 trap cleanup_instruments EXIT
-function cleanup_instruments() {
+cleanup_instruments() {
   # Because we fork instruments in this script, we need to clean up if it's
   # still running because of an error or the user pressed Ctrl-C
   if [[ $pid_instruments -gt 0 ]]; then
@@ -87,5 +88,5 @@ function cleanup_instruments() {
 if [[ $1 == "----test" ]]; then
   get_error_status
 else
-  run_instruments $@
+  run_instruments "$@"
 fi

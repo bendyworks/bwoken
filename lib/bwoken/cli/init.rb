@@ -18,29 +18,31 @@ BANNER
       end
 
       # opts - A slop command object (acts like super-hash)
-      #        There are currently no options available
+      #        Only allowed option is 'integration-path' which should
+      #        have defaulted to 'integration'
       def initialize opts
-        # opts = opts.to_hash if opts.is_a?(Slop)
+        opts = opts.to_hash if opts.is_a?(Slop)
+        Bwoken.integration_path = opts[:'integration-path']
       end
 
       def run
-        directory 'integration/coffeescript/iphone'
-        directory 'integration/coffeescript/ipad'
-        directory 'integration/javascript'
-        directory 'integration/tmp/results'
-        template 'integration/coffeescript/iphone/example.coffee'
-        template 'integration/coffeescript/ipad/example.coffee'
-        template 'integration/javascript/example_vendor.js'
+        directory "coffeescript/iphone"
+        directory "coffeescript/ipad"
+        directory "javascript"
+        directory "tmp/results"
+        template "coffeescript/iphone/example.coffee"
+        template "coffeescript/ipad/example.coffee"
+        template "javascript/example_vendor.js"
       end
 
       def directory dirname
-        FileUtils.mkdir_p dirname
+        FileUtils.mkdir_p "#{Bwoken.integration_path}/#{dirname}"
       end
 
       def template filename
-        FileUtils.cp \
-          File.expand_path("../templates/#{filename}", __FILE__),
-          filename
+        source = File.expand_path("../templates/#{filename}", __FILE__)
+        destination = "#{Bwoken.integration_path}/#{filename}"
+        FileUtils.cp source, destination
       end
 
     end

@@ -5,7 +5,15 @@ module Bwoken
     DEVICE_FAMILIES = %w(iphone ipad)
 
     def path
-      File.join(project_path, 'integration')
+      File.join(project_path, integration_path)
+    end
+
+    def integration_path
+      @integration_path || 'integration'
+    end
+
+    def integration_path= new_integration_path
+      @integration_path = new_integration_path
     end
 
     def tmp_path
@@ -13,7 +21,11 @@ module Bwoken
     end
 
     def app_name
-      File.basename(File.basename(workspace_or_project, '.xcodeproj'), '.xcworkspace')
+      @name || File.basename(File.basename(workspace_or_project, '.xcodeproj'), '.xcworkspace')
+    end
+
+    def app_name= name
+      @name = name
     end
 
     def project_path

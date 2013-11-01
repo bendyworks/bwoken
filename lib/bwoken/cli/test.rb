@@ -17,7 +17,7 @@ module Bwoken
     class Test
 
       def self.help_banner
-        <<BANNER
+        <<-BANNER
 Run your tests. If you don't specify which tests, bwoken will run them all
 
   bwoken test --simulator # runs all tests in the simulator
@@ -38,15 +38,18 @@ BANNER
       attr_accessor :options
 
       # opts - A slop command object (acts like super-hash)
-      #       :clobber    - remove all generated files, including iOS build
-      #       :family     - enum of [nil, 'iphone', 'ipad'] (case-insensitive)
-      #       :flags      - custom build flag array (default: []) TODO: not yet implmented
-      #       :focus      - which tests to run (default: [], meaning "all")
-      #       :formatter  - custom formatter (default: 'colorful')
-      #       :scheme     - custom scheme (default: nil)
-      #       :simulator  - should force simulator use (default: nil)
-      #       :skip-build - do not build the iOS binary
-      #       :verbose    - be verbose
+      #       :clobber          - remove all generated files, including iOS build
+      #       :family           - enum of [nil, 'iphone', 'ipad'] (case-insensitive)
+      #       :flags            - custom build flag array (default: []) TODO: not yet implmented
+      #       :focus            - which tests to run (default: [], meaning "all")
+      #       :formatter        - custom formatter (default: 'colorful')
+      #       :scheme           - custom scheme (default: nil)
+      #       :simulator        - should force simulator use (default: nil)
+      #       :skip-build       - do not build the iOS binary
+      #       :verbose          - be verbose
+      #       :integration-path - the base directory for all the integration files
+      #       :product-name     - the name of the generated .app file if it is different from the name of the project/workspace
+      #       :configuration    - typically "Debug" or "Release"
       def initialize opts
         opts = opts.to_hash if opts.is_a?(Slop)
         self.options = opts.to_hash.tap do |o|
@@ -55,6 +58,9 @@ BANNER
           o[:simulator] = use_simulator?(o[:simulator])
           o[:family] = o[:family]
         end
+
+        Bwoken.integration_path = options[:'integration-path']
+        Bwoken.app_name = options[:'product-name']
       end
 
       def run
@@ -71,14 +77,16 @@ BANNER
           b.formatter = options[:formatter]
           b.scheme = options[:scheme] if options[:scheme]
           b.simulator = options[:simulator]
+          b.configuration = options[:configuration]
         end.compile
       end
 
       def transpile
-        coffeescripts      = Rake::FileList['integration/coffeescript/**/*.coffee']
-        compiled_coffee    = coffeescripts.pathmap('%{^integration/coffeescript,integration/tmp/javascript}d/%n.js')
-        javascripts        = Rake::FileList['integration/javascript/**/*.js']
-        copied_javascripts = javascripts.pathmap('%{^integration/javascript,integration/tmp/javascript}d/%f')
+        integration_dir = Bwoken.integration_path
+        coffeescripts      = Rake::FileList["#{integration_dir}/coffeescript/**/*.coffee"]
+        compiled_coffee    = coffeescripts.pathmap("%{^#{integration_dir}/coffeescript,#{integration_dir}/tmp/javascript}d/%n.js")
+        javascripts        = Rake::FileList["#{integration_dir}/javascript/**/*.js"]
+        copied_javascripts = javascripts.pathmap("%{^#{integration_dir}/javascript,#{integration_dir}/tmp/javascript}d/%f")
 
         compiled_coffee.zip(coffeescripts).each do |target, source|
           containing_dir = target.pathmap('%d')

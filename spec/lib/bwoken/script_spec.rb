@@ -65,12 +65,13 @@ describe Bwoken::Script do
     it 'returns a hash with UIASCRIPT set to #path' do
       Bwoken.stub(:results_path => 'foo')
       subject.path = 'bar'
-      subject.env_variables['UIASCRIPT'].should == 'bar'
+      subject.env_variables['UIASCRIPT'].should == '"bar"'
     end
 
     it 'returns a hash with UIARESULTSPATH set to Bwoken.results_path' do
       Bwoken.stub(:results_path => 'foo')
-      subject.env_variables['UIARESULTSPATH'].should == 'foo'
+      subject.path = 'bar'
+      subject.env_variables['UIARESULTSPATH'].should == '"foo"'
     end
 
   end
@@ -80,7 +81,7 @@ describe Bwoken::Script do
       subject.path = 'foo'
       Bwoken.stub(:results_path => 'bar')
 
-      allowed = ['-e UIASCRIPT foo -e UIARESULTSPATH bar', '-e UIARESULTSPATH bar -e UIASCRIPT foo']
+      allowed = ['-e UIASCRIPT "foo" -e UIARESULTSPATH "bar"', '-e UIARESULTSPATH "bar" -e UIASCRIPT "foo"']
       subject.env_variables_for_cli.should be_in(allowed)
     end
   end
@@ -103,11 +104,11 @@ describe Bwoken::Script do
     let(:want_simulator) { true }
     let(:regexp) do
       /
-        unix_instruments\.sh\s+
+        unix_instruments\.sh"\s+
         #{expected_device_flag_regexp}
-        -D\s#{trace_file_path}\s+
-        -t\s#{path_to_automation_template}\s+
-        #{app_dir}\s+
+        -D\s"#{trace_file_path}"\s+
+        -t\s"#{path_to_automation_template}"\s+
+        "#{app_dir}"\s+
         #{env_variables_for_cli}/x
     end
 

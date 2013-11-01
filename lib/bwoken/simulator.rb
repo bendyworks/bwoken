@@ -11,7 +11,7 @@ module Bwoken
     end
 
     def self.update_device_family_in_plist action, args = nil
-      system_cmd = lambda {|command| Kernel.system "#{plist_buddy} -c '#{command}' #{plist_file}" }
+      system_cmd = lambda {|command| Kernel.system "#{plist_buddy} -c '#{command}' \"#{plist_file}\"" }
 
       case action
       when :delete_array then system_cmd['Delete :UIDeviceFamily']
