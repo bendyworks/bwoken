@@ -159,7 +159,7 @@ Install rvm via <a href="https://rvm.io/rvm/install/">the instructions</a>. Ensu
 
 ### Install
 
-In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create an <code>.rvmrc</code> file and trigger its use:
+In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create <code>.ruby-version</code> and <code>.ruby-gemset</code> files and trigger their use:
 
 <pre><code>$ echo '2.0.0' &gt; .ruby-version
 $ echo 'my_project' &gt; .ruby-gemset
