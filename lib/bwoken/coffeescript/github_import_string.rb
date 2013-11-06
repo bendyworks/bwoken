@@ -26,7 +26,7 @@ module Bwoken
       # out to Kernel#`, so we shouldn't be allowing all characters (eg, ';' would be BAD)
       def parse_parts
         importing = @string.match(%r{\A\s*#github\s+['"]?\b([^'"]*)['"]?}i)[1]
-        @repo_name, @file_path = importing.match(%r{([-a-z_0-9]+/[-a-z_0-9]+)/([-a-z_0-9/\.]*)})[1..2]
+        @repo_name, @file_path = importing.match(%r{([-a-z_0-9]+/[-a-z_0-9\.]+)/([-a-z_0-9/\.]*)}i)[1..2]
       end
 
       def ensure_github
