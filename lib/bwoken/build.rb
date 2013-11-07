@@ -34,6 +34,7 @@ module Bwoken
     attr_accessor :scheme
     attr_accessor :simulator
     attr_accessor :configuration
+    attr_accessor :sdk_version
     attr_accessor :verbose
 
     def initialize
@@ -67,7 +68,7 @@ module Bwoken
         #{Bwoken.workspace_or_project_flag} \
         #{scheme_string} \
         -configuration #{configuration} \
-        -sdk #{sdk} \
+        -sdk #{sdk}#{sdk_version} \
         -xcconfig #{self.class.xcconfig} \
         #{variables_for_cli} \
         clean build"

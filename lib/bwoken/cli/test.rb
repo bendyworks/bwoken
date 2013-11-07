@@ -50,6 +50,7 @@ BANNER
       #       :integration-path - the base directory for all the integration files
       #       :product-name     - the name of the generated .app file if it is different from the name of the project/workspace
       #       :configuration    - typically "Debug" or "Release"
+      #       :sdk-version      - the version of the sdk to use when building
       def initialize opts
         opts = opts.to_hash if opts.is_a?(Slop)
         self.options = opts.to_hash.tap do |o|
@@ -78,6 +79,7 @@ BANNER
           b.scheme = options[:scheme] if options[:scheme]
           b.simulator = options[:simulator]
           b.configuration = options[:configuration]
+          b.sdk_version = options[:'sdk-version']
         end.compile
       end
 
