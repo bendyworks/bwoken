@@ -59,7 +59,7 @@ module Bwoken
     end
 
     def scheme_string
-      Bwoken.xcworkspace ? "-scheme #{scheme}" : ''
+      Bwoken.xcworkspace ? %Q|-scheme "#{scheme}"| : ''
     end
 
     def cmd
