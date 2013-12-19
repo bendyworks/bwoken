@@ -159,6 +159,8 @@ Install rvm via <a href="https://rvm.io/rvm/install/">the instructions</a>. Ensu
 
 ### Install
 
+**NOTE:** Do **NOT** use `sudo` to install or run bwoken. It will almost definitely fail you.
+
 In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create <code>.ruby-version</code> and <code>.ruby-gemset</code> files and trigger their use:
 
 <pre><code>$ echo '2.0.0' &gt; .ruby-version
