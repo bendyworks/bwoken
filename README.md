@@ -113,7 +113,7 @@ $ bwoken test -h
         --clobber               Remove any generated file
         --skip-build            Do not build the iOS binary
         --configuration         The build configruation to use (e.g., --configuration=Release)
-        --sdk-version           The SDK version to use (e.g., --sdk=6.1)
+        --sdk-version           The SDK version to use (e.g., --sdk-version=6.1)
         --verbose               Be verbose
     -h, --help                  Display this help message.
 </code></pre>
