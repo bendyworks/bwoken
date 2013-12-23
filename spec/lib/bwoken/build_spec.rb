@@ -30,6 +30,7 @@ describe Bwoken::Build do
       scheme_regex = scheme.gsub(/ /, '\s+')
       configuration = stub_out(subject, :configuration, :baz)
       sdk = stub_out(subject, :sdk, :qux)
+      sdk_version = stub_out(subject, :sdk_version, 123)
       xcconfig = stub_out(subject.class, :xcconfig, :quz)
       variables_for_cli = stub_out(subject, :variables_for_cli, :quux)
 
@@ -38,7 +39,7 @@ describe Bwoken::Build do
         #{workspace_regex}\s+
         #{scheme_regex}\s+
         -configuration\s+#{configuration}\s+
-        -sdk\s+#{sdk}\s+
+        -sdk\s+#{sdk}#{sdk_version}\s+
         -xcconfig\s+#{xcconfig}\s+
         #{variables_for_cli}\s+
         clean\s+build
