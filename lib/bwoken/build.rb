@@ -77,7 +77,7 @@ module Bwoken
     def compile
       formatter.before_build_start
 
-      succeeded, out_string, err_string = RUBY_VERSION == '1.8.7' ? compile_18 : compile_19_plus
+      succeeded, out_string, err_string = compile_19_plus
 
       if succeeded
         formatter.build_successful out_string
@@ -85,16 +85,6 @@ module Bwoken
         formatter.build_failed out_string, err_string
         fail BuildFailedError.new
       end
-    end
-
-    def compile_18
-      out_string, err_string = '', ''
-      a, b, c = Open3.popen3(cmd) do |stdin, stdout, stderr|
-        out_string = formatter.format_build stdout
-        err_string = stderr.read
-      end
-
-      [a.to_s !~ /BUILD FAILED/, out_string, err_string]
     end
 
     def compile_19_plus
