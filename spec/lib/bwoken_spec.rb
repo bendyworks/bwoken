@@ -32,7 +32,7 @@ describe Bwoken do
         File.stub(:exists? => true)
         stub_proj_path
         Bwoken.stub(:xcworkspace => "#{proj_path}/FakeProject.xcworkspace")
-        Bwoken.workspace_or_project_flag.should == "-workspace #{proj_path}/FakeProject.xcworkspace"
+        Bwoken.workspace_or_project_flag.should == "-workspace \"#{proj_path}/FakeProject.xcworkspace\""
       end
     end
 
@@ -41,7 +41,7 @@ describe Bwoken do
         File.stub(:exists? => false)
         stub_proj_path
         Bwoken.stub(:xcodeproj => "#{proj_path}/FakeProject.xcodeproj")
-        Bwoken.workspace_or_project_flag.should == "-project #{proj_path}/FakeProject.xcodeproj"
+        Bwoken.workspace_or_project_flag.should == "-project \"#{proj_path}/FakeProject.xcodeproj\""
       end
     end
   end

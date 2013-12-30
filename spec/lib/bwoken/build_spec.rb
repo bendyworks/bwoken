@@ -40,7 +40,7 @@ describe Bwoken::Build do
         #{scheme_regex}\s+
         -configuration\s+#{configuration}\s+
         -sdk\s+#{sdk}#{sdk_version}\s+
-        -xcconfig\s+#{xcconfig}\s+
+        -xcconfig\s+"#{xcconfig}"\s+
         #{variables_for_cli}\s+
         clean\s+build
         /x
