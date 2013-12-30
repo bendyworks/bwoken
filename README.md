@@ -165,7 +165,7 @@ Install rvm via <a href="https://rvm.io/rvm/install/">the instructions</a>. Ensu
 
 In the terminal, inside the directory of your project (e.g., you should see a <code>ProjectName.xcodeproj</code> file), create <code>.ruby-version</code> and <code>.ruby-gemset</code> files and trigger their use:
 
-<pre><code>$ echo '2.0.0' &gt; .ruby-version
+<pre><code>$ echo '2.1.0' &gt; .ruby-version
 $ echo 'my_project' &gt; .ruby-gemset
 $ cd .
 </code></pre>
@@ -178,7 +178,7 @@ $ bundle init
 
 This will create a <code>Gemfile</code>. Add bwoken to it and bundle:
 
-<pre><code>$ echo "gem 'bwoken', '2.0.0.beta.1'" &gt;&gt; Gemfile
+<pre><code>$ echo "gem 'bwoken', '2.0.0.beta.3'" &gt;&gt; Gemfile
 $ bundle
 </code></pre>
 
@@ -191,7 +191,7 @@ Now, you can start <a href="#usage">using it!</a>
 
 #### The Dirty Little Installation Method
 
-Technically, you can skip this entire Installation section and just run `sudo gem install bwoken && bwoken init`. This is listed here for completeness, but you really shouldn't install gems this way.
+Technically, you can skip this entire Installation section and just run `sudo gem install bwoken && bwoken init`. This is listed here for completeness, but you really shouldn't install gems this way. This installation method will almost certainly not work with versions of OS X prior to Mavericks.
 
 ## Contributors
 
