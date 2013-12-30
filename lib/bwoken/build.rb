@@ -51,7 +51,7 @@ module Bwoken
 
     def env_variables
       {
-        'BWOKEN_CONFIGURATION_BUILD_DIR' => self.class.configuration_build_dir(simulator)
+        'BWOKEN_CONFIGURATION_BUILD_DIR' => %Q|"#{self.class.configuration_build_dir(simulator)}"|
       }
     end
 
@@ -69,7 +69,7 @@ module Bwoken
         #{scheme_string} \
         -configuration #{configuration} \
         -sdk #{sdk}#{sdk_version} \
-        -xcconfig #{self.class.xcconfig} \
+        -xcconfig \"#{self.class.xcconfig}\" \
         #{variables_for_cli} \
         clean build"
     end
