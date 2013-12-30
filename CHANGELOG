@@ -1,3 +1,15 @@
+Version 2.0.0 2013-12-30 Brad Grzesiak <brad@bendyworks.com>
+
+    * Use `bwoken` at the command line instead of `rake`.
+    * Allow spaces in the pwd of your project.
+    * Allow much more configuration of the builder and test runner.
+    * Deprecate Ruby 1.x. You must now use Ruby 2.x. (2.0.0 comes standard with Mavericks; other versions installable via RVM or rbenv)
+    * Deprecate invocation via `rake`.
+
+Version 1.3.0
+
+Version 1.2.0
+
 Version 1.1.0 2012-7-5 Brad Grzesiak <brad@bendyworks.com> and Jaymes Waters <jaymes@bendyworks.com>
 
     * Add device support.
