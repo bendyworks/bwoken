@@ -20,12 +20,6 @@ describe Bwoken do
     end
   end
 
-  describe '.path_to_automation_template' do
-    it 'returns the location of the Automation template', :platform => :osx do
-      File.file?(Bwoken.path_to_automation_template).should be_true
-    end
-  end
-
   describe '.workspace_or_project_flag', :stub_proj_path do
     context 'xcworkspace exists' do
       it 'returns the workspace flag' do

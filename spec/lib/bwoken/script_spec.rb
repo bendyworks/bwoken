@@ -96,7 +96,6 @@ describe Bwoken::Script do
 
   describe '#cmd' do
     let!(:trace_file_path) { stub_out(subject.class, :trace_file_path, 'trace_file_path') }
-    let!(:path_to_automation_template) { stub_out(Bwoken, :path_to_automation_template, 'foo') }
     let!(:env_variables_for_cli) { stub_out(subject, :env_variables_for_cli, 'baz') }
 
     let(:uuid) { 'abcdef1234567890' }
@@ -107,7 +106,7 @@ describe Bwoken::Script do
         unix_instruments\.sh"\s+
         #{expected_device_flag_regexp}
         -D\s"#{trace_file_path}"\s+
-        -t\s"#{path_to_automation_template}"\s+
+        -t\s"Automation"\s+
         "#{app_dir}"\s+
         #{env_variables_for_cli}/x
     end

@@ -40,16 +40,6 @@ module Bwoken
       `xcode-select -print-path`.strip
     end
 
-    def path_to_automation_template
-      template = nil
-      `xcrun instruments -s 2>&1 | grep Automation.tracetemplate`.split("\n").each do |path|
-        path = path.gsub(/^\s*"|",\s*$/, "")
-        template = path if File.exists?(path)
-        break if template
-      end
-      template
-    end
-
     %w(xcworkspace xcodeproj).each do |xcode_root|
       define_method xcode_root do
         paths = Dir["#{project_path}/*.#{xcode_root}"]

@@ -38,7 +38,7 @@ module Bwoken
       %Q|"#{File.expand_path('../../../bin', __FILE__)}/unix_instruments.sh" \
         #{device_flag} \
         -D "#{self.class.trace_file_path}" \
-        -t "#{Bwoken.path_to_automation_template}" \
+        -t "Automation" \
         "#{app_dir}" \
         #{env_variables_for_cli}|
     end
