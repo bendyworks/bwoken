@@ -46,7 +46,7 @@ module Bwoken
 
     def device_flag
       if !device.nil?
-        return "-w '#{device}'"
+        return "-w \"#{device}\""
       end
       
       simulator ? '' : "-w #{Bwoken::Device.uuid}"
