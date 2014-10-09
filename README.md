@@ -104,6 +104,7 @@ Here's a list of all the switches that bwoken takes for the `test` command:
 $ bwoken test -h
 [...]
         --simulator             Use simulator, even when an iDevice is connected
+        --device                Use given device (name or id)
         --family                Test only one device type, either ipad or iphone. Default is to test on both
         --scheme                Specify a custom scheme
         --product-name          Specify a custom product name (e.g. --product-name="My Product"). Default is the name of of the xcodeproj file

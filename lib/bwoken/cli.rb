@@ -23,6 +23,7 @@ opts = Slop.parse :help => true do
     banner Bwoken::CLI::Test.help_banner
 
     on :simulator, 'Use simulator, even when an iDevice is connected', :default => false
+    on :device=, 'Use given device (name or id)', :default => nil
 
     on :family=, 'Test only one device type, either ipad or iphone. Default is to test on both',
       :match => /\A(?:ipad|iphone|all)\Z/i, :default => 'all'

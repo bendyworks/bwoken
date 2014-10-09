@@ -7,6 +7,7 @@ module Bwoken
     attr_accessor :focus
     attr_accessor :formatter
     attr_accessor :simulator
+    attr_accessor :device
     attr_accessor :app_dir
 
     alias_method :feature_names, :focus
@@ -39,6 +40,7 @@ module Bwoken
         sr.focus = focus
         sr.formatter = formatter
         sr.simulator = simulator
+        sr.device = device
         sr.app_dir = app_dir
       end
     end
@@ -60,6 +62,7 @@ module Bwoken
         dr.focus = focus
         dr.formatter = formatter
         dr.app_dir = app_dir
+        dr.device = device
       end
     end
 

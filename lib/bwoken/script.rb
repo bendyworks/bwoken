@@ -17,6 +17,7 @@ module Bwoken
     attr_accessor :device_family
     attr_accessor :formatter
     attr_accessor :simulator
+    attr_accessor :device
     attr_accessor :app_dir
 
     def initialize
@@ -44,6 +45,10 @@ module Bwoken
     end
 
     def device_flag
+      if !device.nil?
+        return "-w '#{device}'"
+      end
+      
       simulator ? '' : "-w #{Bwoken::Device.uuid}"
     end
 
