@@ -6,6 +6,7 @@ module Bwoken
     attr_accessor :focus
     attr_accessor :formatter
     attr_accessor :app_dir
+    attr_accessor :device
 
     alias_method :feature_names, :focus
 
@@ -28,6 +29,7 @@ module Bwoken
           s.device_family = device_family
           s.formatter = formatter
           s.app_dir = app_dir
+          s.device = device
         end
       end
     end

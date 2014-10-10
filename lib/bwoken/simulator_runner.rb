@@ -7,6 +7,7 @@ module Bwoken
     attr_accessor :focus
     attr_accessor :formatter
     attr_accessor :simulator
+    attr_accessor :device
     attr_accessor :app_dir
     attr_accessor :device_family
 
@@ -28,6 +29,7 @@ module Bwoken
           s.device_family = device_family
           s.formatter = formatter
           s.simulator = simulator
+          s.device = device
           s.app_dir = app_dir
         end
       end
