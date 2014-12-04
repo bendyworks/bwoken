@@ -95,6 +95,9 @@ describe Bwoken::Script do
   end
 
   describe '#cmd' do
+    # WORKING:
+    # instruments -w "iPhone 5s (8.1 Simulator)" -t Automation build/iphonesimulator/BwokenTestApp.app -D integration/tmp/trace -e UIASCRIPT integration/tmp/javascript/iphone/example.js -e UIARESULTSPATH integration/tmp/results
+
     let!(:trace_file_path) { stub_out(subject.class, :trace_file_path, 'trace_file_path') }
     let!(:env_variables_for_cli) { stub_out(subject, :env_variables_for_cli, 'baz') }
 
@@ -102,11 +105,10 @@ describe Bwoken::Script do
     let(:app_dir) { 'bar' }
     let(:want_simulator) { true }
     let(:regexp) do
-      /
-        unix_instruments\.sh"\s+
+      /\s*instruments\s+
         #{expected_device_flag_regexp}
-        -D\s"#{trace_file_path}"\s+
         -t\s"Automation"\s+
+        -D\s"#{trace_file_path}"\s+
         "#{app_dir}"\s+
         #{env_variables_for_cli}/x
     end
