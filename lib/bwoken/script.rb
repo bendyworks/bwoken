@@ -50,7 +50,7 @@ module Bwoken
         return "-w \"#{device}\""
       end
 
-      simulator ? '-w "iPhone 5s (8.0 Simulator)"' : "-w #{Bwoken::Device.uuid}"
+      simulator ? '-w "iPhone 5s (8.1 Simulator)"' : "-w #{Bwoken::Device.uuid}"
     end
 
     def run
